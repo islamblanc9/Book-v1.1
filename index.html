@@ -10,7 +10,7 @@
         body {
             margin: 0; padding: 0;
             font-family: 'Tajawal', sans-serif;
-            background-color: #e9ecef; /* لون خلفية خارج الهاتف */
+            background-color: #e9ecef; 
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
         }
@@ -26,7 +26,7 @@
             overflow: hidden;
         }
         
-        /* الإطارات الزخرفية المستوحاة من الغلاف */
+        /* الإطارات الزخرفية */
         .app-container::before {
             content: ''; position: absolute; top: 12px; bottom: 12px; left: 12px; right: 12px;
             border: 2.5px solid #d4af37; pointer-events: none; z-index: 10;
@@ -78,7 +78,7 @@
         }
         .code-inputs input:focus { border-color: #d4af37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.4); transform: translateY(-3px); }
 
-        /* ================= تصميم البطاقات (للرواية والأجزاء) ================= */
+        /* ================= تصميم البطاقات ================= */
         .options-grid { display: grid; gap: 12px; width: 100%; }
         .card-btn {
             background-color: #fff; border: 1.5px solid #ddd; color: #444;
@@ -125,13 +125,11 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- زوايا الإطار الذهبية -->
         <div class="corner-dec tl"></div>
         <div class="corner-dec tr"></div>
         <div class="corner-dec bl"></div>
         <div class="corner-dec br"></div>
         
-        <!-- الشعار ثابت في الأعلى -->
         <div class="header">
             <svg class="logo-icon" viewBox="0 0 24 24">
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/>
@@ -140,7 +138,7 @@
             <p>MAKTABAT ISLAM</p>
         </div>
         
-        <!-- ================= الشاشة 1: كود التفعيل ================= -->
+        <!-- الشاشة 1: كود التفعيل -->
         <div id="activation-screen" class="screen">
             <div class="activation-wrapper">
                 <div class="section-title">الكتاب الذكي</div>
@@ -160,7 +158,7 @@
             </div>
         </div>
 
-        <!-- ================= الشاشة 2: اختيار الرواية ================= -->
+        <!-- الشاشة 2: اختيار الرواية -->
         <div id="riwaya-screen" class="screen hidden">
             <div class="section-title">اختر الرواية</div>
             
@@ -174,7 +172,7 @@
             </div>
         </div>
 
-        <!-- ================= الشاشة 3: اختيار الجزء ================= -->
+        <!-- الشاشة 3: اختيار الجزء -->
         <div id="juz-screen" class="screen hidden">
             <div class="section-title">اختر الجزء</div>
             
@@ -183,7 +181,7 @@
                 <button class="card-btn juz-btn" onclick="selectJuz(this)">جزء تبارك</button>
                 <button class="card-btn juz-btn" onclick="selectJuz(this)">جزء قد سمع</button>
                 <button class="card-btn juz-btn" onclick="selectJuz(this)">جزء الذاريات</button>
-                <button class="card-btn juz-btn" onclick="selectJuz(this)">الجزء الثامن</button>
+                <button class="card-btn juz-btn" onclick="selectJuz(this)">جزء الأحقاف</button>
             </div>
             
             <div class="bottom-actions">
@@ -192,16 +190,15 @@
             </div>
         </div>
 
-        <!-- حقوق النشر (ثابتة في الأسفل) -->
+        <!-- حقوق النشر -->
         <div class="footer">
             جميع الحقوق والنشر والطبع محفوظة<br>
-            <strong>لذى مكتبة إسلام - عنابة © 2024</strong>
+            <strong>لدى مكتبة إسلام - عنابة ©</strong>
         </div>
 
     </div>
 
     <script>
-        // --- سكربت الانتقال بين خانات الكود ---
         const inputs = document.querySelectorAll('.code-inputs input');
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
@@ -212,13 +209,11 @@
             });
         });
 
-        // --- الانتقال لشاشة الرواية ---
         function goToRiwayaScreen() {
             document.getElementById('activation-screen').classList.add('hidden');
             document.getElementById('riwaya-screen').classList.remove('hidden');
         }
 
-        // --- وظائف شاشة الرواية ---
         function selectRiwaya(btn) {
             let buttons = document.querySelectorAll('.riwaya-btn');
             buttons.forEach(b => b.classList.remove('selected-card'));
@@ -232,7 +227,6 @@
             document.getElementById('juz-screen').classList.remove('hidden');
         }
 
-        // --- وظائف شاشة الأجزاء ---
         function selectJuz(btn) {
             let buttons = document.querySelectorAll('.juz-btn');
             buttons.forEach(b => b.classList.remove('selected-card'));

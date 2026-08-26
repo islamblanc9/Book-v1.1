@@ -5,226 +5,203 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الكتاب الذكي - مكتبة إسلام</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
         
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Tajawal', sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: #e9ecef; /* لون خلفية خارج الهاتف */
+            display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
         }
         
-        /* حاوية التطبيق الرئيسية */
+        /* حاوية التطبيق */
         .app-container {
             background-color: #ffffff;
-            width: 100%;
-            max-width: 400px;
-            height: 100vh; 
-            max-height: 800px;
+            width: 100%; max-width: 420px;
+            height: 100vh; max-height: 850px;
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column;
+            overflow: hidden;
         }
         
-        /* الإطارات الزخرفية */
+        /* الإطارات الزخرفية المستوحاة من الغلاف */
         .app-container::before {
-            content: ''; position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
-            border: 2px solid #d4af37; border-radius: 15px; pointer-events: none; z-index: 10;
+            content: ''; position: absolute; top: 12px; bottom: 12px; left: 12px; right: 12px;
+            border: 2.5px solid #d4af37; pointer-events: none; z-index: 10;
         }
         .app-container::after {
-            content: ''; position: absolute; top: 22px; bottom: 22px; left: 22px; right: 22px;
-            border: 1px dashed #1a8c4b; border-radius: 10px; pointer-events: none; z-index: 10;
-        }
-        
-        .header { text-align: center; margin-top: 40px; z-index: 2; }
-        .logo-icon { width: 45px; fill: none; stroke: #1a8c4b; stroke-width: 1.5; margin-bottom: 5px;}
-        .header h2 { margin: 0; color: #1a8c4b; font-weight: 900; font-size: 20px;}
-        
-        /* شاشات التطبيق */
-        .screen {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 35px;
-            z-index: 2;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-        
-        .hidden {
-            display: none !important;
-            opacity: 0;
-            transform: translateX(-20px);
-        }
-        
-        /* --- تصميم شاشة التفعيل (الأولى) --- */
-        #activation-screen {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        #activation-screen h1 { color: #d4af37; font-size: 36px; font-weight: 900; margin-bottom: 5px; }
-        #activation-screen h3 { color: #1a8c4b; font-size: 18px; margin-top: 0; margin-bottom: 30px; }
-        
-        .code-inputs { display: flex; gap: 10px; margin-bottom: 40px; direction: ltr; }
-        .code-inputs input {
-            width: 45px; height: 55px; font-size: 26px; text-align: center;
-            border: 2px solid #1a8c4b; border-radius: 10px; color: #333; font-weight: bold; outline: none; transition: 0.3s;
-        }
-        .code-inputs input:focus { border-color: #d4af37; box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); transform: translateY(-2px); }
-        
-        /* --- تصميم شاشة الاختيار (الثانية) --- */
-        #selection-screen {
-            justify-content: flex-start;
-            padding-top: 20px;
-        }
-        .section-title {
-            color: #d4af37;
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 12px;
-            text-align: right;
-            width: 100%;
-        }
-        
-        /* تصميم البطاقات والأزرار */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            width: 100%;
-        }
-        
-        /* بطاقات الرواية (كبيرة) */
-        .riwaya-card {
-            background-color: #fdfdfc;
-            border: 2px solid #e0e0e0;
-            color: #555;
-            padding: 25px 10px; /* طول البطاقة */
-            border-radius: 15px;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 18px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* أزرار الأجزاء (عادية) */
-        .juz-btn {
-            background-color: #fdfdfc;
-            border: 2px solid #e0e0e0;
-            color: #555;
-            padding: 12px 10px;
-            border-radius: 10px;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
+            content: ''; position: absolute; top: 20px; bottom: 20px; left: 20px; right: 20px;
+            border: 1.5px solid #1a8c4b; pointer-events: none; z-index: 10;
         }
 
-        /* التأثير عند الاختيار */
+        /* زخارف الزوايا الأربعة */
+        .corner-dec { position: absolute; width: 22px; height: 22px; border: 2.5px solid #d4af37; background-color: #fff; z-index: 11; }
+        .tl { top: 3px; left: 3px; border-radius: 50% 0 50% 0; }
+        .tr { top: 3px; right: 3px; border-radius: 0 50% 0 50%; }
+        .bl { bottom: 3px; left: 3px; border-radius: 0 50% 0 50%; }
+        .br { bottom: 3px; right: 3px; border-radius: 50% 0 50% 0; }
+        
+        /* الشعار الثابت في الأعلى */
+        .header { text-align: center; margin-top: 35px; z-index: 12; padding: 0 30px; }
+        .logo-icon { width: 55px; fill: none; stroke: #1a8c4b; stroke-width: 1.5; }
+        .header h2 { margin: 5px 0 0 0; color: #1a8c4b; font-weight: 900; font-size: 24px; }
+        .header p { margin: 0; color: #d4af37; font-size: 13px; font-weight: bold; letter-spacing: 1px; }
+        
+        /* الشاشات */
+        .screen {
+            flex: 1; display: flex; flex-direction: column;
+            padding: 20px 35px 0; z-index: 12;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            overflow-y: auto;
+        }
+        .screen::-webkit-scrollbar { display: none; }
+        .hidden { display: none !important; opacity: 0; transform: scale(0.98); }
+
+        /* العناوين الداخلية */
+        .section-title {
+            color: #d4af37; font-size: 28px; font-weight: 700;
+            margin-bottom: 25px; text-align: center; font-family: 'Amiri', serif;
+        }
+        
+        /* ================= تصميم شاشة التفعيل ================= */
+        .activation-wrapper {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1;
+        }
+        .activation-wrapper h3 { color: #1a8c4b; font-size: 18px; margin-bottom: 25px; font-weight: 700; }
+        .code-inputs { display: flex; gap: 10px; margin-bottom: 40px; direction: ltr; }
+        .code-inputs input {
+            width: 45px; height: 55px; font-size: 28px; text-align: center;
+            border: 2px solid #1a8c4b; border-radius: 8px; color: #1a8c4b; font-weight: 900;
+            outline: none; transition: 0.3s; background-color: #fdfdfc; font-family: sans-serif;
+        }
+        .code-inputs input:focus { border-color: #d4af37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.4); transform: translateY(-3px); }
+
+        /* ================= تصميم البطاقات (للرواية والأجزاء) ================= */
+        .options-grid { display: grid; gap: 12px; width: 100%; }
+        .card-btn {
+            background-color: #fff; border: 1.5px solid #ddd; color: #444;
+            padding: 18px 15px; border-radius: 10px; font-family: 'Tajawal', sans-serif;
+            font-size: 18px; font-weight: 900; cursor: pointer; transition: 0.3s;
+            position: relative; overflow: hidden; text-align: center;
+        }
+        .card-btn::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 5px; height: 100%; background-color: #d4af37;
+            transform: scaleY(0); transition: 0.3s; transform-origin: bottom;
+        }
+        .card-btn:hover { border-color: #d4af37; transform: translateY(-2px); }
+        
         .selected-card {
-            background-color: #1a8c4b !important;
-            color: #fff !important;
-            border-color: #1a8c4b !important;
-            box-shadow: 0 5px 15px rgba(26, 140, 75, 0.3);
-            transform: translateY(-3px);
+            background-color: #1a8c4b !important; color: #fff !important; border-color: #1a8c4b !important;
+            box-shadow: 0 6px 15px rgba(26, 140, 75, 0.25); transform: translateY(-3px) !important;
         }
+        .selected-card::before { transform: scaleY(1); background-color: #d4af37; }
         
-        /* كلاس لإخفاء الأقسام وإظهارها بنعومة */
-        .step-hidden {
-            display: none;
-            opacity: 0;
-            transform: translateY(15px);
-            transition: all 0.5s ease;
-        }
-        .step-visible {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-            margin-top: 20px;
-        }
-        
-        /* زر البداية */
+        /* الأزرار السفلية */
+        .bottom-actions { margin-top: auto; margin-bottom: 10px; display: flex; gap: 10px; padding-top: 20px;}
         .btn-primary {
-            background-color: #1a8c4b; color: white; border: none; padding: 15px;
-            font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer;
-            width: 100%; font-family: 'Tajawal', sans-serif; transition: 0.3s;
-            margin-top: auto; 
-            margin-bottom: 20px;
+            background-color: #d4af37; color: #fff; border: none; padding: 15px;
+            font-size: 18px; font-weight: 900; border-radius: 8px; cursor: pointer;
+            flex: 1; font-family: 'Tajawal', sans-serif; transition: 0.3s;
         }
-        .btn-primary:hover { background-color: #146c38; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(26, 140, 75, 0.3);}
+        .btn-primary:hover { background-color: #b8962c; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);}
+        .btn-primary:disabled { background-color: #e0e0e0; color: #999; cursor: not-allowed; transform: none; box-shadow: none;}
+        
+        .btn-secondary {
+            background-color: #fff; color: #1a8c4b; border: 2px solid #1a8c4b; padding: 15px;
+            font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer;
+            width: 30%; font-family: 'Tajawal', sans-serif; transition: 0.3s;
+        }
+        .btn-secondary:hover { background-color: #f4fcf7; }
+
+        /* الفوتر (حقوق النشر) */
+        .footer {
+            text-align: center; padding: 15px 30px 30px; z-index: 12;
+            font-size: 11px; color: #666; font-family: 'Tajawal', sans-serif; line-height: 1.6;
+        }
+        .footer strong { color: #1a8c4b; font-size: 12px; }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- الشعار -->
+        <!-- زوايا الإطار الذهبية -->
+        <div class="corner-dec tl"></div>
+        <div class="corner-dec tr"></div>
+        <div class="corner-dec bl"></div>
+        <div class="corner-dec br"></div>
+        
+        <!-- الشعار ثابت في الأعلى -->
         <div class="header">
             <svg class="logo-icon" viewBox="0 0 24 24">
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/>
             </svg>
             <h2>مكتبة إسلام</h2>
+            <p>MAKTABAT ISLAM</p>
         </div>
         
-        <!-- ================= الشاشة 1: التفعيل ================= -->
+        <!-- ================= الشاشة 1: كود التفعيل ================= -->
         <div id="activation-screen" class="screen">
-            <h1>الكتاب الذكي</h1>
-            <h3>أدخل كود التفعيل</h3>
-            
-            <div class="code-inputs">
-                <input type="text" maxlength="1" autofocus>
-                <input type="text" maxlength="1">
-                <input type="text" maxlength="1">
-                <input type="text" maxlength="1">
-                <input type="text" maxlength="1">
-            </div>
-            
-            <button class="btn-primary" onclick="goToSelection()">تأكيد الكود</button>
-        </div>
-
-        <!-- ================= الشاشة 2: الاختيارات المتسلسلة ================= -->
-        <div id="selection-screen" class="screen hidden">
-            
-            <!-- الخطوة 1: اختيار الرواية (تظهر أولاً) -->
-            <div id="step-1">
-                <div class="section-title">1. اختر الرواية:</div>
-                <div class="options-grid">
-                    <button class="riwaya-card" onclick="selectRiwaya(this)">ورش عن نافع</button>
-                    <button class="riwaya-card" onclick="selectRiwaya(this)">حفص عن عاصم</button>
+            <div class="activation-wrapper">
+                <div class="section-title">الكتاب الذكي</div>
+                <h3>الرجاء إدخال كود التفعيل</h3>
+                
+                <div class="code-inputs">
+                    <input type="text" maxlength="1" autofocus>
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                    <input type="text" maxlength="1">
+                </div>
+                
+                <div class="bottom-actions" style="width: 100%;">
+                    <button class="btn-primary" onclick="goToRiwayaScreen()">دخول</button>
                 </div>
             </div>
+        </div>
 
-            <!-- الخطوة 2: اختيار الجزء (مخفية في البداية) -->
-            <div id="step-2" class="step-hidden">
-                <div class="section-title">2. اختر الجزء:</div>
-                <div class="options-grid">
-                    <button class="juz-btn" onclick="selectJuz(this)">جزء عمّ</button>
-                    <button class="juz-btn" onclick="selectJuz(this)">جزء تبارك</button>
-                    <button class="juz-btn" onclick="selectJuz(this)">جزء قد سمع</button>
-                    <button class="juz-btn" onclick="selectJuz(this)">الجزء الثامن</button>
-                </div>
+        <!-- ================= الشاشة 2: اختيار الرواية ================= -->
+        <div id="riwaya-screen" class="screen hidden">
+            <div class="section-title">اختر الرواية</div>
+            
+            <div class="options-grid">
+                <button class="card-btn riwaya-btn" onclick="selectRiwaya(this)">رواية ورش عن نافع</button>
+                <button class="card-btn riwaya-btn" onclick="selectRiwaya(this)">رواية حفص عن عاصم</button>
+            </div>
+
+            <div class="bottom-actions">
+                <button id="next-btn" class="btn-primary" disabled onclick="goToJuzScreen()">التالي</button>
+            </div>
+        </div>
+
+        <!-- ================= الشاشة 3: اختيار الجزء ================= -->
+        <div id="juz-screen" class="screen hidden">
+            <div class="section-title">اختر الجزء</div>
+            
+            <div class="options-grid">
+                <button class="card-btn juz-btn" onclick="selectJuz(this)">جزء عمّ</button>
+                <button class="card-btn juz-btn" onclick="selectJuz(this)">جزء تبارك</button>
+                <button class="card-btn juz-btn" onclick="selectJuz(this)">جزء قد سمع</button>
+                <button class="card-btn juz-btn" onclick="selectJuz(this)">جزء الذاريات</button>
+                <button class="card-btn juz-btn" onclick="selectJuz(this)">الجزء الثامن</button>
             </div>
             
-            <!-- الخطوة 3: زر البداية (مخفي في البداية) -->
-            <div id="step-3" class="step-hidden" style="margin-top: auto;">
-                <button class="btn-primary" onclick="startJourney()">ابدأ رحلة الحفظ</button>
+            <div class="bottom-actions">
+                <button class="btn-secondary" onclick="goBackToRiwaya()">رجوع</button>
+                <button id="start-btn" class="btn-primary" disabled onclick="startJourney()">ابدأ رحلة الحفظ</button>
             </div>
-
         </div>
+
+        <!-- حقوق النشر (ثابتة في الأسفل) -->
+        <div class="footer">
+            جميع الحقوق والنشر والطبع محفوظة<br>
+            <strong>لذى مكتبة إسلام - عنابة © 2024</strong>
+        </div>
+
     </div>
 
     <script>
-        // --- سكربت خانات الكود ---
+        // --- سكربت الانتقال بين خانات الكود ---
         const inputs = document.querySelectorAll('.code-inputs input');
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
@@ -235,49 +212,42 @@
             });
         });
 
-        // --- الانتقال للشاشة الثانية ---
-        function goToSelection() {
+        // --- الانتقال لشاشة الرواية ---
+        function goToRiwayaScreen() {
             document.getElementById('activation-screen').classList.add('hidden');
-            setTimeout(() => {
-                document.getElementById('selection-screen').classList.remove('hidden');
-            }, 100);
+            document.getElementById('riwaya-screen').classList.remove('hidden');
         }
 
-        // --- عند اختيار الرواية ---
+        // --- وظائف شاشة الرواية ---
         function selectRiwaya(btn) {
-            // تلوين البطاقة
-            let cards = document.querySelectorAll('.riwaya-card');
-            cards.forEach(c => c.classList.remove('selected-card'));
+            let buttons = document.querySelectorAll('.riwaya-btn');
+            buttons.forEach(b => b.classList.remove('selected-card'));
             btn.classList.add('selected-card');
             
-            // إظهار قسم الأجزاء بنعومة
-            let step2 = document.getElementById('step-2');
-            step2.style.display = 'block';
-            setTimeout(() => {
-                step2.classList.remove('step-hidden');
-                step2.classList.add('step-visible');
-            }, 50);
+            document.getElementById('next-btn').disabled = false;
         }
 
-        // --- عند اختيار الجزء ---
+        function goToJuzScreen() {
+            document.getElementById('riwaya-screen').classList.add('hidden');
+            document.getElementById('juz-screen').classList.remove('hidden');
+        }
+
+        // --- وظائف شاشة الأجزاء ---
         function selectJuz(btn) {
-            // تلوين الزر
             let buttons = document.querySelectorAll('.juz-btn');
             buttons.forEach(b => b.classList.remove('selected-card'));
             btn.classList.add('selected-card');
             
-            // إظهار زر البداية بنعومة
-            let step3 = document.getElementById('step-3');
-            step3.style.display = 'block';
-            setTimeout(() => {
-                step3.classList.remove('step-hidden');
-                step3.classList.add('step-visible');
-            }, 50);
+            document.getElementById('start-btn').disabled = false;
         }
 
-        // --- زر البداية ---
+        function goBackToRiwaya() {
+            document.getElementById('juz-screen').classList.add('hidden');
+            document.getElementById('riwaya-screen').classList.remove('hidden');
+        }
+
         function startJourney() {
-            alert("ممتاز! سيتم الآن توجيهك إلى واجهة الحفظ...");
+            alert("تم إعداد المنصة! سيتم نقلك لمحتوى الجزء المختار.");
         }
     </script>
 </body>

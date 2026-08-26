@@ -50,6 +50,7 @@
             padding: 20px 35px 0; z-index: 12;
             transition: opacity 0.4s ease, transform 0.4s ease;
             overflow-y: auto;
+            scroll-behavior: smooth; /* يخلي السكرول يطلع بنعومة */
         }
         .screen::-webkit-scrollbar { display: none; }
         .hidden { display: none !important; opacity: 0; transform: scale(0.98); }
@@ -59,7 +60,6 @@
             margin-bottom: 25px; text-align: center; font-family: 'Amiri', serif;
         }
         
-        /* شاشة التفعيل */
         .activation-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
         .activation-wrapper h3 { color: #1a8c4b; font-size: 18px; margin-bottom: 25px; font-weight: 700; }
         .code-inputs { display: flex; gap: 10px; margin-bottom: 40px; direction: ltr; }
@@ -70,7 +70,6 @@
         }
         .code-inputs input:focus { border-color: #d4af37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.4); transform: translateY(-3px); }
 
-        /* البطاقات */
         .options-grid { display: grid; gap: 12px; width: 100%; }
         .card-btn {
             background-color: #fff; border: 1.5px solid #ddd; color: #444;
@@ -89,7 +88,6 @@
         }
         .selected-card::before { transform: scaleY(1); background-color: #d4af37; }
         
-        /* قائمة السور (الجديدة) */
         .surah-list {
             display: flex; flex-direction: column; gap: 10px;
             overflow-y: auto; padding-bottom: 20px;
@@ -111,7 +109,6 @@
             font-size: 15px; font-family: 'Tajawal', sans-serif; font-weight: bold;
         }
 
-        /* الأزرار السفلية */
         .bottom-actions { margin-top: auto; margin-bottom: 10px; display: flex; gap: 10px; padding-top: 20px;}
         .btn-primary {
             background-color: #d4af37; color: #fff; border: none; padding: 15px;
@@ -150,7 +147,7 @@
             <p>MAKTABAT ISLAM</p>
         </div>
         
-        <!-- الشاشة 1: كود التفعيل -->
+        <!-- الشاشات -->
         <div id="activation-screen" class="screen">
             <div class="activation-wrapper">
                 <div class="section-title">الكتاب الذكي</div>
@@ -168,7 +165,6 @@
             </div>
         </div>
 
-        <!-- الشاشة 2: اختيار الرواية -->
         <div id="riwaya-screen" class="screen hidden">
             <div class="section-title">اختر الرواية</div>
             <div class="options-grid">
@@ -180,7 +176,6 @@
             </div>
         </div>
 
-        <!-- الشاشة 3: اختيار الجزء -->
         <div id="juz-screen" class="screen hidden">
             <div class="section-title">اختر الجزء</div>
             <div class="options-grid">
@@ -196,15 +191,9 @@
             </div>
         </div>
 
-        <!-- الشاشة 4: قائمة السور (الجديدة) -->
         <div id="surah-screen" class="screen hidden">
             <div class="section-title" id="surah-title">اختر السورة</div>
-            
-            <!-- القائمة التي ستتغير حسب الجزء المختار -->
-            <div class="surah-list" id="surah-container">
-                <!-- يتم توليد السور هنا بواسطة الجافاسكريبت -->
-            </div>
-            
+            <div class="surah-list" id="surah-container"></div>
             <div class="bottom-actions">
                 <button class="btn-secondary" onclick="goBack('juz')">رجوع</button>
             </div>
@@ -214,11 +203,9 @@
             جميع الحقوق والنشر والطبع محفوظة<br>
             <strong>لدى مكتبة إسلام - عنابة ©</strong>
         </div>
-
     </div>
 
     <script>
-        // داتا السور لكل جزء (للتبسيط وضعت السور الرئيسية)
         const surahData = {
             "عم": ["النبأ", "النازعات", "عبس", "التكوير", "الإنفطار", "المطففين", "الإنشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"],
             "تبارك": ["الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات"],
@@ -258,14 +245,19 @@
         function selectJuz(btn) {
             document.querySelectorAll('.juz-btn').forEach(b => b.classList.remove('selected-card'));
             btn.classList.add('selected-card');
-            selectedJuzKey = btn.getAttribute('data-juz'); // حفظ الجزء المختار
+            selectedJuzKey = btn.getAttribute('data-juz');
             document.getElementById('start-btn').disabled = false;
         }
 
-        // بناء قائمة السور حسب الجزء المختار والانتقال للشاشة
         function goToSurahScreen() {
             const container = document.getElementById('surah-container');
-            container.innerHTML = ""; // تفريغ القائمة القديمة
+            const surahScreen = document.getElementById('surah-screen');
+            
+            container.innerHTML = ""; 
+            
+            // الحل: إرجاع السكرول للصفر عند دخول الشاشة
+            surahScreen.scrollTop = 0;
+            container.scrollTop = 0;
             
             const surahs = surahData[selectedJuzKey];
             
@@ -284,7 +276,7 @@
             document.getElementById('surah-title').innerText = "سور جزء " + selectedJuzKey;
             
             document.getElementById('juz-screen').classList.add('hidden');
-            document.getElementById('surah-screen').classList.remove('hidden');
+            surahScreen.classList.remove('hidden');
         }
 
         function goBack(toScreen) {
@@ -299,7 +291,6 @@
 
         function openSurahContent(surahName) {
             alert("سيتم نقلك لصفحة تلاوة وتدبر سورة: " + surahName);
-            // هنا نبرمجو الشاشة القادمة الخاصة بمحتوى السورة
         }
     </script>
 </body>

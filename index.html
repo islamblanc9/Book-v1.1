@@ -29,7 +29,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* لمنع خروج المحتوى أثناء الانتقال */
+            overflow: hidden; 
         }
         
         /* الإطارات الزخرفية */
@@ -56,7 +56,6 @@
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
         
-        /* إخفاء الشاشة غير النشطة */
         .hidden {
             display: none !important;
             opacity: 0;
@@ -82,60 +81,94 @@
         /* --- تصميم شاشة الاختيار (الثانية) --- */
         #selection-screen {
             justify-content: flex-start;
-            padding-top: 30px;
+            padding-top: 20px;
         }
         .section-title {
             color: #d4af37;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 900;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             text-align: right;
             width: 100%;
         }
         
-        /* أزرار الاختيار (رواية وجزء) */
+        /* تصميم البطاقات والأزرار */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 25px;
             width: 100%;
         }
-        .option-btn {
-            background-color: #fff;
+        
+        /* بطاقات الرواية (كبيرة) */
+        .riwaya-card {
+            background-color: #fdfdfc;
             border: 2px solid #e0e0e0;
             color: #555;
-            padding: 15px 10px;
-            border-radius: 12px;
+            padding: 25px 10px; /* طول البطاقة */
+            border-radius: 15px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* أزرار الأجزاء (عادية) */
+        .juz-btn {
+            background-color: #fdfdfc;
+            border: 2px solid #e0e0e0;
+            color: #555;
+            padding: 12px 10px;
+            border-radius: 10px;
             font-family: 'Tajawal', sans-serif;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
         }
-        /* تأثير عند اختيار الزر */
-        .option-btn.selected {
-            background-color: #1a8c4b;
-            color: #fff;
-            border-color: #1a8c4b;
-            box-shadow: 0 4px 10px rgba(26, 140, 75, 0.2);
+
+        /* التأثير عند الاختيار */
+        .selected-card {
+            background-color: #1a8c4b !important;
+            color: #fff !important;
+            border-color: #1a8c4b !important;
+            box-shadow: 0 5px 15px rgba(26, 140, 75, 0.3);
+            transform: translateY(-3px);
         }
         
-        /* الأزرار الرئيسية */
+        /* كلاس لإخفاء الأقسام وإظهارها بنعومة */
+        .step-hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s ease;
+        }
+        .step-visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            margin-top: 20px;
+        }
+        
+        /* زر البداية */
         .btn-primary {
             background-color: #1a8c4b; color: white; border: none; padding: 15px;
             font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer;
             width: 100%; font-family: 'Tajawal', sans-serif; transition: 0.3s;
-            margin-top: auto; /* لدفعه للأسفل */
+            margin-top: auto; 
             margin-bottom: 20px;
         }
-        .btn-primary:hover { background-color: #146c38; transform: translateY(-2px); }
-        .btn-primary:disabled { background-color: #ccc; cursor: not-allowed; transform: none; }
+        .btn-primary:hover { background-color: #146c38; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(26, 140, 75, 0.3);}
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- الشعار (ثابت في كل الشاشات) -->
+        <!-- الشعار -->
         <div class="header">
             <svg class="logo-icon" viewBox="0 0 24 24">
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/>
@@ -159,31 +192,39 @@
             <button class="btn-primary" onclick="goToSelection()">تأكيد الكود</button>
         </div>
 
-        <!-- ================= الشاشة 2: اختيار الرواية والجزء ================= -->
+        <!-- ================= الشاشة 2: الاختيارات المتسلسلة ================= -->
         <div id="selection-screen" class="screen hidden">
             
-            <!-- اختيار الرواية -->
-            <div class="section-title">1. اختر الرواية:</div>
-            <div class="options-grid" id="riwaya-options">
-                <button class="option-btn" onclick="selectOption(this, 'riwaya')">ورش عن نافع</button>
-                <button class="option-btn" onclick="selectOption(this, 'riwaya')">حفص عن عاصم</button>
+            <!-- الخطوة 1: اختيار الرواية (تظهر أولاً) -->
+            <div id="step-1">
+                <div class="section-title">1. اختر الرواية:</div>
+                <div class="options-grid">
+                    <button class="riwaya-card" onclick="selectRiwaya(this)">ورش عن نافع</button>
+                    <button class="riwaya-card" onclick="selectRiwaya(this)">حفص عن عاصم</button>
+                </div>
             </div>
 
-            <!-- اختيار الجزء -->
-            <div class="section-title">2. اختر الجزء:</div>
-            <div class="options-grid" id="juz-options">
-                <button class="option-btn" onclick="selectOption(this, 'juz')">جزء عمّ</button>
-                <button class="option-btn" onclick="selectOption(this, 'juz')">جزء تبارك</button>
-                <button class="option-btn" onclick="selectOption(this, 'juz')">جزء قد سمع</button>
-                <button class="option-btn" onclick="selectOption(this, 'juz')">الجزء الثامن</button>
+            <!-- الخطوة 2: اختيار الجزء (مخفية في البداية) -->
+            <div id="step-2" class="step-hidden">
+                <div class="section-title">2. اختر الجزء:</div>
+                <div class="options-grid">
+                    <button class="juz-btn" onclick="selectJuz(this)">جزء عمّ</button>
+                    <button class="juz-btn" onclick="selectJuz(this)">جزء تبارك</button>
+                    <button class="juz-btn" onclick="selectJuz(this)">جزء قد سمع</button>
+                    <button class="juz-btn" onclick="selectJuz(this)">الجزء الثامن</button>
+                </div>
             </div>
             
-            <button id="start-btn" class="btn-primary" disabled onclick="startJourney()">ابدأ رحلة الحفظ</button>
+            <!-- الخطوة 3: زر البداية (مخفي في البداية) -->
+            <div id="step-3" class="step-hidden" style="margin-top: auto;">
+                <button class="btn-primary" onclick="startJourney()">ابدأ رحلة الحفظ</button>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // --- سكربت الانتقال بين خانات الكود ---
+        // --- سكربت خانات الكود ---
         const inputs = document.querySelectorAll('.code-inputs input');
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
@@ -194,42 +235,49 @@
             });
         });
 
-        // --- سكربت الانتقال السلس للشاشة الثانية ---
+        // --- الانتقال للشاشة الثانية ---
         function goToSelection() {
-            // إخفاء الشاشة الأولى
             document.getElementById('activation-screen').classList.add('hidden');
-            // إظهار الشاشة الثانية بعد جزء من الثانية ليكون الانتقال ناعماً
             setTimeout(() => {
                 document.getElementById('selection-screen').classList.remove('hidden');
             }, 100);
         }
 
-        // --- سكربت اختيار الرواية والجزء ---
-        let selectedRiwaya = false;
-        let selectedJuz = false;
-
-        function selectOption(btn, type) {
-            // إزالة التحديد عن الأزرار الأخرى في نفس المجموعة
-            const container = btn.parentElement;
-            const buttons = container.querySelectorAll('.option-btn');
-            buttons.forEach(b => b.classList.remove('selected'));
+        // --- عند اختيار الرواية ---
+        function selectRiwaya(btn) {
+            // تلوين البطاقة
+            let cards = document.querySelectorAll('.riwaya-card');
+            cards.forEach(c => c.classList.remove('selected-card'));
+            btn.classList.add('selected-card');
             
-            // تفعيل الزر المضغوط
-            btn.classList.add('selected');
-
-            // التحقق من أن المستخدم اختار رواية وجزء لتفعيل زر البداية
-            if (type === 'riwaya') selectedRiwaya = true;
-            if (type === 'juz') selectedJuz = true;
-
-            if (selectedRiwaya && selectedJuz) {
-                document.getElementById('start-btn').disabled = false;
-            }
+            // إظهار قسم الأجزاء بنعومة
+            let step2 = document.getElementById('step-2');
+            step2.style.display = 'block';
+            setTimeout(() => {
+                step2.classList.remove('step-hidden');
+                step2.classList.add('step-visible');
+            }, 50);
         }
 
-        // --- سكربت زر البداية ---
+        // --- عند اختيار الجزء ---
+        function selectJuz(btn) {
+            // تلوين الزر
+            let buttons = document.querySelectorAll('.juz-btn');
+            buttons.forEach(b => b.classList.remove('selected-card'));
+            btn.classList.add('selected-card');
+            
+            // إظهار زر البداية بنعومة
+            let step3 = document.getElementById('step-3');
+            step3.style.display = 'block';
+            setTimeout(() => {
+                step3.classList.remove('step-hidden');
+                step3.classList.add('step-visible');
+            }, 50);
+        }
+
+        // --- زر البداية ---
         function startJourney() {
-            alert("ممتاز! جاري تجهيز بيئة الحفظ الرقمية...");
-            // هنا سنبرمج لاحقاً الانتقال لصفحة المحتوى الخاص بالجزء
+            alert("ممتاز! سيتم الآن توجيهك إلى واجهة الحفظ...");
         }
     </script>
 </body>

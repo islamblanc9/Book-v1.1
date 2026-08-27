@@ -99,12 +99,6 @@
         .player-box { background: #fff; border: 2px solid #1a8c4b; border-radius: 12px; padding: 20px; text-align: center; margin-top: 10px; }
         .reciter-select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1.5px solid #1a8c4b; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 15px; font-weight: bold; color: #333; background: #fdfdfc; outline: none; }
         
-        .quiz-box { background: #fff; border: 2px solid #1a8c4b; border-radius: 12px; padding: 20px; text-align: center; margin-top: 10px; }
-        .q-text { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px; font-family: 'Amiri', serif; }
-        .quiz-option { background: #fdfdfc; border: 1px solid #ddd; padding: 12px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; text-align: right; }
-        .quiz-option.correct { background: #d4edda; color: #155724; border-color: #c3e6cb; }
-        .quiz-option.wrong { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
-
         /* 🎓 ستايل الشهادة الذكية على الشاشة 🎓 */
         .cert-container { background: #fff; border: 2px solid #1a8c4b; border-radius: 12px; padding: 20px; text-align: center; margin-top: 10px; }
         .cert-input-name { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; font-family: 'Tajawal', sans-serif; margin-bottom: 15px; text-align: center; outline: none; }
@@ -277,7 +271,7 @@
             <button class="library-btn" onclick="goToScreen('library-menu-screen')">📚 دخول المكتبة الرقمية</button>
         </div>
 
-        <!-- قائمة المكتبة الرقمية -->
+        <!-- قائمة المكتبة الرقمية (محدثة بالكتب الجديدة) -->
         <div id="library-menu-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('riwaya-screen')">◀ رجوع</button>
@@ -289,6 +283,11 @@
                 <button class="card-btn" onclick="openPDF('المصحف الشريف (ورش)', 'YOUR_DRIVE_LINK_HERE/preview')">🕌 المصحف الشريف (ورش)</button>
                 <button class="card-btn" onclick="openPDF('المصحف الشريف (حفص)', 'YOUR_DRIVE_LINK_HERE/preview')">🕌 المصحف الشريف (حفص)</button>
                 <button class="card-btn" onclick="openPDF('الأربعون النووية', 'YOUR_DRIVE_LINK_HERE/preview')">📜 الأربعون النووية</button>
+                <button class="card-btn" onclick="openPDF('قصص الأنبياء - ابن كثير', 'YOUR_DRIVE_LINK_HERE/preview')">📚 قصص الأنبياء (ابن كثير)</button>
+                <button class="card-btn" onclick="openPDF('حصن المسلم', 'YOUR_DRIVE_LINK_HERE/preview')">🛡️ حصن المسلم</button>
+                <button class="card-btn" onclick="openPDF('تفسير السعدي', 'YOUR_DRIVE_LINK_HERE/preview')">📖 تفسير السعدي</button>
+                <button class="card-btn" onclick="openPDF('رياض الصالحين', 'YOUR_DRIVE_LINK_HERE/preview')">🌱 رياض الصالحين</button>
+                <button class="card-btn" onclick="openPDF('الداء والدواء - ابن القيم', 'YOUR_DRIVE_LINK_HERE/preview')">💊 الداء والدواء</button>
             </div>
         </div>
 
@@ -466,7 +465,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 🚀 فحص تلقائي عند فتح التطبيق لأول مرة: هل تم التفعيل من قبل في هذا الهاتف؟
+        // 🚀 فحص تلقائي عند فتح التطبيق: هل تم التفعيل من قبل في هذا الهاتف؟
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('maktabat_islam_activated') === 'true') {
                 goToScreen('riwaya-screen');
@@ -498,7 +497,6 @@
                 if (doc.exists) {
                     let data = doc.data();
                     if (data.active === true) {
-                        // حفظ حالة التفعيل في ذاكرة الهاتف كي لا تظهر صفحة التفعيل أبداً بعد اليوم
                         localStorage.setItem('maktabat_islam_activated', 'true');
                         goToScreen('riwaya-screen');
                     } else {

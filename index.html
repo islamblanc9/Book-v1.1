@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>الكتاب الذكي - مكتبة إسلام</title>
+    <title>القسم الرقمي - الكتاب الذكي</title>
     
+    <!-- دعم PWA والتثبيت على شاشة الهاتف -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a8c4b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="الكتاب الذكي">
+
     <!-- مكتبات Firebase السحابية للتحقق من الأكواد -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -35,6 +42,38 @@
         .bl { bottom: 3px; left: 3px; border-radius: 0 50% 0 50%; }
         .br { bottom: 3px; right: 3px; border-radius: 50% 0 50% 0; }
         
+        /* 🌟 ستايل الانترو (الشاشة الافتتاحية) 🌟 */
+        #splash-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #fdfdfc; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.6s ease-out;
+        }
+        .splash-logo { width: 90px; fill: none; stroke: #1a8c4b; stroke-width: 1.5; animation: pulse 1.5s infinite; }
+        .splash-title { color: #1a8c4b; font-size: 34px; font-weight: 900; margin: 20px 0 5px 0; font-family: 'Tajawal', sans-serif; text-align: center; line-height: 1.2;}
+        .splash-subtitle { color: #d4af37; font-size: 22px; font-weight: 900; margin: 0; text-align: center;}
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
+
+        /* 📱 نافذة التثبيت الترحيبية الاحترافية (تظهر بجمالية بدل الـ Alert) 📱 */
+        #install-welcome-modal, #custom-install-modal {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65); z-index: 9998;
+            display: flex; justify-content: center; align-items: center; padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .modal-card {
+            background: #fff; width: 100%; max-width: 330px; border-radius: 16px;
+            padding: 25px 20px; text-align: center; border: 2px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideUp 0.4s ease-out;
+        }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-card h3 { color: #1a8c4b; font-size: 20px; font-weight: 900; margin: 10px 0 10px 0; font-family: 'Tajawal', sans-serif; }
+        .modal-card p { color: #555; font-size: 13px; line-height: 1.6; margin-bottom: 20px; text-align: right; font-family: 'Tajawal', sans-serif; }
+        .modal-btn-install { background: #d4af37; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 8px; font-size: 15px; font-weight: 900; cursor: pointer; margin-bottom: 10px; font-family: 'Tajawal', sans-serif; }
+        .modal-btn-install:hover { background: #b8962c; }
+        .modal-btn-skip { background: transparent; color: #666; border: none; font-size: 13px; font-weight: bold; cursor: pointer; font-family: 'Tajawal', sans-serif; }
+        .modal-btn-skip:hover { color: #1a8c4b; }
+
         .header { text-align: center; margin-top: 35px; z-index: 12; padding: 0 30px; flex-shrink: 0; }
         .logo-icon { width: 45px; fill: none; stroke: #1a8c4b; stroke-width: 1.5; }
         .header h2 { margin: 2px 0 0 0; color: #1a8c4b; font-weight: 900; font-size: 20px; }
@@ -53,9 +92,9 @@
         .sticky-header {
             position: sticky; top: -15px; background: #ffffff; z-index: 100;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 0 10px; margin-bottom: 15px; border-bottom: 2px solid #f4fcf7; margin-top: -15px;
+            padding: 15px 0 10px; margin-bottom: 15px; border-bottom: 2px solid #f4fcf7; margin-top: -15px;
         }
-        .btn-back-top { background-color: #f4fcf7; color: #1a8c4b; border: 1.5px solid #1a8c4b; padding: 6px 12px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-weight: bold; cursor: pointer; display: flex; align-items: center; font-size: 14px; }
+        .btn-back-top { background-color: #f4fcf7; color: #1a8c4b; border: 1.5px solid #1a8c4b; padding: 5px 12px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-weight: bold; cursor: pointer; display: flex; align-items: center; font-size: 13px; }
         .btn-back-top:hover { background-color: #1a8c4b; color: #fff; }
 
         .badge-container { text-align: center; width: 100%; margin-bottom: 15px; flex-shrink: 0; }
@@ -66,13 +105,20 @@
         .code-inputs { display: flex; gap: 8px; margin-bottom: 30px; direction: ltr; justify-content: center; width: 100%; }
         .code-inputs input { width: 45px; height: 50px; font-size: 26px; text-align: center; border: 2px solid #1a8c4b; border-radius: 8px; color: #1a8c4b; font-weight: 900; outline: none; background-color: #fdfdfc; }
 
-        .options-grid { display: grid; gap: 10px; width: 100%; }
-        .card-btn { background-color: #fff; border: 1.5px solid #ddd; color: #444; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: 900; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; text-align: center; width: 100%; font-family: 'Tajawal', sans-serif;}
+        .options-grid { display: grid; gap: 10px; width: 100%; margin-bottom: 10px; }
+        .card-btn { background-color: #fff; border: 1.5px solid #ddd; color: #444; padding: 13px; border-radius: 10px; font-size: 15px; font-weight: 900; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; text-align: center; width: 100%; font-family: 'Tajawal', sans-serif; display: flex; justify-content: center; align-items: center; gap: 8px;}
         .card-btn::before { content: ''; position: absolute; top: 0; right: 0; width: 5px; height: 100%; background-color: #d4af37; transform: scaleY(0); transition: 0.3s; transform-origin: bottom; }
         .card-btn:hover { border-color: #d4af37; }
         .selected-card { background-color: #1a8c4b !important; color: #fff !important; border-color: #1a8c4b !important; }
         .selected-card::before { transform: scaleY(1); background-color: #d4af37; }
         
+        .install-banner { background: #f4fcf7; border: 1.5px solid #1a8c4b; border-radius: 10px; padding: 10px 15px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; }
+        .install-banner span { font-size: 12px; color: #1a8c4b; font-weight: bold; font-family: 'Tajawal', sans-serif; }
+        .install-btn { background: #1a8c4b; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; font-family: 'Tajawal', sans-serif; }
+        .install-btn:hover { background: #146c38; }
+
+        .category-title { color: #1a8c4b; font-size: 15px; font-weight: 900; margin: 15px 0 8px 0; text-align: right; border-right: 3px solid #d4af37; padding-right: 8px; font-family: 'Tajawal', sans-serif; }
+
         .surah-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; padding-bottom: 15px; width: 100%; }
         .surah-btn { background-color: #fdfdfc; border: 1.5px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; color: #1a8c4b; font-family: 'Amiri', serif; font-size: 20px; font-weight: 700; cursor: pointer; }
         .surah-number { background-color: #d4af37; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 13px; font-family: 'Tajawal', sans-serif; font-weight: bold; }
@@ -84,7 +130,9 @@
         .feature-icon { font-size: 32px; }
 
         .quran-box { background: #fffdf9; border: 2px solid #d4af37; border-radius: 12px; padding: 20px 15px; text-align: center; box-shadow: inset 0 0 10px rgba(212,175,55,0.1); margin-bottom: 15px; }
-        .quran-text { font-family: 'Amiri', serif; font-size: 24px; line-height: 2.5; color: #222; font-weight: 700; }
+        .surah-header-title { font-family: 'Amiri', serif; font-size: 26px; color: #1a8c4b; font-weight: 900; margin-bottom: 12px; border-bottom: 2px dashed #d4af37; padding-bottom: 8px; }
+        .bismillah-text { font-family: 'Amiri', serif; font-size: 22px; color: #d4af37; font-weight: bold; margin-bottom: 15px; display: block; }
+        .quran-text { font-family: 'Amiri', serif; font-size: 24px; line-height: 2.5; color: #222; font-weight: 700; text-align: justify; }
         .ayah-num { color: #d4af37; font-size: 18px; margin: 0 5px; font-weight: bold; }
 
         .tafseer-box { background: #ffffff; border: 1.5px solid #1a8c4b; border-radius: 12px; padding: 20px; text-align: right; margin-bottom: 20px; }
@@ -94,6 +142,7 @@
         .tafseer-section p { color: #444; font-size: 13px; line-height: 1.8; margin: 0; text-align: justify; }
 
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #d4af37; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        .splash-loader { border-width: 3px; width: 30px; height: 30px; margin-top: 30px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .player-box { background: #fff; border: 2px solid #1a8c4b; border-radius: 12px; padding: 20px; text-align: center; margin-top: 10px; }
@@ -137,98 +186,27 @@
 
         .cert-note { font-size: 9px; color: #666; margin-top: 15px; font-style: italic; }
 
-        /* 🖨️ الكود السحري للطباعة: يمنع القص والانقسام تماماً 🖨️ */
+        /* 🖨️ الكود السحري للطباعة 🖨️ */
         @media print {
             @page { size: landscape; margin: 10mm; }
-            html, body {
-                width: 100% !important;
-                height: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                background: #fff !important;
-                overflow: visible !important;
-            }
-            
+            html, body { width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; background: #fff !important; overflow: visible !important; }
             .screen:not(#certificate-screen) { display: none !important; }
-            .header, .sticky-header, #cert-input-area, .btn-print, .footer { display: none !important; }
+            .header, .sticky-header, #cert-input-area, .btn-print, .footer, #splash-screen, #install-welcome-modal, #custom-install-modal { display: none !important; }
             .corner-dec, .app-container::before, .app-container::after { display: none !important; }
-
-            .app-container {
-                width: 100% !important;
-                max-width: 100% !important;
-                height: auto !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                display: block !important;
-            }
-
-            #certificate-screen {
-                padding: 0 !important;
-                margin: 0 !important;
-                display: block !important;
-            }
-
-            #cert-display-area {
-                position: relative !important;
-                width: 100% !important;
-                height: auto !important;
-                transform: none !important;
-                top: auto !important;
-                left: auto !important;
-                display: block !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-
-            .certificate-wrapper {
-                width: 100% !important;
-                display: block !important;
-            }
-
-            .certificate-box {
-                width: 100% !important;
-                border-width: 6px !important;
-                padding: 10px !important;
-                margin: 0 !important;
-                box-sizing: border-box !important;
-                box-shadow: none !important;
-            }
-
-            .cert-border-inner {
-                border-width: 2px !important;
-                padding: 20px !important;
-            }
-
-            .cert-logo-svg { width: 60px !important; margin-bottom: 5px !important; }
-            .cert-brand-name { font-size: 18pt !important; margin-bottom: 10px !important; }
-            .cert-title-main { font-size: 28pt !important; margin-bottom: 15px !important; }
-            .cert-text { font-size: 16pt !important; margin-bottom: 8pt !important; }
-            .cert-name-val { font-size: 24pt !important; padding: 5px 20px !important; margin-bottom: 15px !important; }
-            .cert-surah-val { font-size: 24pt !important; margin-bottom: 20px !important; }
-
-            .cert-footer-grid { padding: 0 20px !important; margin-top: 20px !important; }
-            .cert-sign-text { font-size: 14pt !important; }
-            .cert-signature { width: 80px !important; }
-
-            .cert-stamp { width: 90px !important; height: 90px !important; border-width: 2px !important; }
-            .cert-stamp-inner { border-width: 1.5px !important; }
-            .cert-stamp-inner span:first-child { font-size: 10pt !important; }
-            .cert-stamp-inner span:last-child { font-size: 14pt !important; }
-
-            .cert-note { font-size: 12pt !important; margin-top: 20px !important; }
+            .app-container { width: 100% !important; max-width: 100% !important; height: auto !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; display: block !important; }
+            #certificate-screen, #cert-display-area, .certificate-wrapper, .certificate-box { padding: 0 !important; margin: 0 !important; width: 100% !important; display: block !important; box-shadow: none !important; }
+            .cert-border-inner { border-width: 2px !important; padding: 20px !important; }
         }
 
-        .library-divider { border-top: 2px dashed #1a8c4b; margin: 25px 0 15px; position: relative; }
-        .library-divider span { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #fff; padding: 0 10px; color: #1a8c4b; font-weight: bold; font-size: 14px; }
-        .library-btn { background: #d4af37; color: #fff; border: none; padding: 15px; border-radius: 10px; font-size: 18px; font-weight: 900; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; font-family: 'Tajawal', sans-serif;}
+        .library-divider { border-top: 2px dashed #1a8c4b; margin: 15px 0 10px; position: relative; }
+        .library-divider span { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #fff; padding: 0 10px; color: #1a8c4b; font-weight: bold; font-size: 13px; }
+        .library-btn { background: #d4af37; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 17px; font-weight: 900; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: 'Tajawal', sans-serif;}
         .library-btn:hover { background: #b8962c; }
         .pdf-frame { width: 100%; height: 60vh; border: 2px solid #d4af37; border-radius: 10px; margin-bottom: 15px; background: #f4f4f4; }
 
-        .bottom-actions { margin-top: auto; margin-bottom: 10px; display: flex; gap: 10px; padding-top: 15px; width: 100%; flex-shrink: 0; }
+        .bottom-actions { margin-top: auto; margin-bottom: 10px; display: flex; gap: 10px; padding-top: 12px; width: 100%; flex-shrink: 0; }
         .btn-primary { background-color: #d4af37; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: 900; border-radius: 8px; cursor: pointer; flex: 1; display: flex; justify-content: center; align-items: center; }
         .btn-primary:disabled { background-color: #e0e0e0; color: #999; cursor: not-allowed; }
-        .btn-secondary { background-color: #fff; color: #1a8c4b; border: 2px solid #1a8c4b; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 30%; }
 
         .footer { text-align: center; padding: 10px 20px 20px; z-index: 12; font-size: 10px; color: #666; width: 100%; flex-shrink: 0; }
         .footer strong { color: #1a8c4b; font-size: 11px; }
@@ -236,6 +214,36 @@
 </head>
 <body>
     <div class="app-container">
+        
+        <!-- 📱 نافذة التثبيت الترحيبية للـ QR Code (منسقة 100% وبالعربية) -->
+        <div id="install-welcome-modal" class="hidden">
+            <div class="modal-card">
+                <svg style="width: 45px; fill: none; stroke: #1a8c4b; stroke-width: 1.5; margin-bottom: 5px;" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/></svg>
+                <h3>القسم الرقمي للكتاب الذكي</h3>
+                <p>مرحباً بك! لتسهيل تلاوتك وحفظك، ثبّت التطبيق الآن على شاشة هاتفك الرئيسية للوصول إليه بضغطة زر واحدة.</p>
+                <button class="modal-btn-install" onclick="triggerInstallFromModal()">📲 تثبيت التطبيق الآن</button>
+                <button class="modal-btn-skip" onclick="closeInstallModal()">تخطي والدخول للموقع</button>
+            </div>
+        </div>
+
+        <!-- 📱 نافذة إشعار التثبيت اليدوي (بدل الـ Alert المنفرة) -->
+        <div id="custom-install-modal" class="hidden">
+            <div class="modal-card">
+                <h3>طريقة تثبيت التطبيق</h3>
+                <p><strong>📱 أندرويد (Chrome):</strong><br>اضغط على القائمة ⁝ أعلى المتصفح، ثم اختر <b>"إضافة إلى الشاشة الرئيسية"</b> أو <b>"تثبيت التطبيق"</b>.</p>
+                <p><strong>🍎 آيفون (Safari):</strong><br>اضغط على زر المشاركة ➦ في الأسفل، ثم اختر <b>"إضافة إلى الشاشة الرئيسية"</b>.</p>
+                <button class="modal-btn-install" onclick="document.getElementById('custom-install-modal').classList.add('hidden')">حسناً، فهمت</button>
+            </div>
+        </div>
+
+        <!-- 🌟 شاشة الانترو الافتتاحية 🌟 -->
+        <div id="splash-screen">
+            <svg class="splash-logo" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/></svg>
+            <h1 class="splash-title">القسم الرقمي</h1>
+            <p class="splash-subtitle">للكتاب الذكي</p>
+            <div class="loader splash-loader"></div>
+        </div>
+
         <!-- زوايا الإطار -->
         <div class="corner-dec tl"></div><div class="corner-dec tr"></div>
         <div class="corner-dec bl"></div><div class="corner-dec br"></div>
@@ -247,12 +255,12 @@
         </div>
         
         <!-- شاشة التفعيل -->
-        <div id="activation-screen" class="screen">
+        <div id="activation-screen" class="screen hidden">
             <div class="activation-wrapper">
                 <div class="section-title">الكتاب الذكي</div>
                 <h3>الرجاء إدخال كود التفعيل</h3>
                 <div class="code-inputs">
-                    <input type="text" maxlength="1" autofocus><input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1">
+                    <input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1">
                 </div>
                 <div class="bottom-actions"><button class="btn-primary" onclick="verifyActivationCode()">دخول</button></div>
             </div>
@@ -261,33 +269,45 @@
         <!-- شاشة اختيار الرواية + المكتبة الرقمية -->
         <div id="riwaya-screen" class="screen hidden">
             <div class="section-title">مسار الحفظ</div>
-            <div class="options-grid" style="margin-top: 10px;">
-                <button class="card-btn riwaya-btn" onclick="selectRiwaya(this)">رواية ورش عن نافع</button>
-                <button class="card-btn riwaya-btn" onclick="selectRiwaya(this)">رواية حفص عن عاصم</button>
+            <div class="options-grid" style="margin-top: 5px;">
+                <button class="card-btn riwaya-btn" onclick="selectRiwaya(this)">📖 رواية ورش عن نافع</button>
+                <button class="card-btn riwaya-btn" onclick="selectRiwaya(this)">🕌 رواية حفص عن عاصم</button>
             </div>
-            <div class="bottom-actions" style="margin-top: 15px;"><button id="next-btn" class="btn-primary" disabled onclick="goToScreen('juz-screen')">التالي</button></div>
+            <div class="bottom-actions" style="margin-top: 5px;"><button id="next-btn" class="btn-primary" disabled onclick="goToScreen('juz-screen')">التالي</button></div>
             
             <div class="library-divider"><span>أو</span></div>
             <button class="library-btn" onclick="goToScreen('library-menu-screen')">📚 دخول المكتبة الرقمية</button>
+
+            <!-- 📲 لافتة التثبيت (تختفي تلقائياً إذا كان التطبيق مثبتاً) -->
+            <div id="install-banner-box" class="install-banner hidden">
+                <span>📲 ثبّت التطبيق كأيقونة على هاتفك</span>
+                <button class="install-btn" onclick="installAppPrompt()">تثبيت</button>
+            </div>
         </div>
 
-        <!-- قائمة المكتبة الرقمية (محدثة بالكتب الجديدة) -->
+        <!-- قائمة المكتبة الرقمية -->
         <div id="library-menu-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('riwaya-screen')">◀ رجوع</button>
-                <div class="section-title" style="margin:0;">المكتبة الرقمية</div>
-                <div style="width: 70px;"></div>
+                <div class="section-title" style="margin:0; font-size:20px;">المكتبة الرقمية</div>
+                <div style="width: 50px;"></div>
             </div>
-            <div class="options-grid">
-                <button class="card-btn" onclick="openPDF('رسائل من القرآن', 'https://drive.google.com/file/d/1R50WraOzYC0oVVe59PRS1m1dUbNcN7_4/preview')">📖 رسائل من القرآن</button>
+            
+            <div class="options-grid" style="padding-bottom: 20px;">
+                <div class="category-title">🕌 المصاحف والتفاسير</div>
                 <button class="card-btn" onclick="openPDF('المصحف الشريف (ورش)', 'https://drive.google.com/file/d/1wQf9IscvpF0p2Hh1CVgvRfgnt2zWd7QU/preview')">🕌 المصحف الشريف (ورش)</button>
                 <button class="card-btn" onclick="openPDF('المصحف الشريف (حفص)', 'https://drive.google.com/file/d/15lpVC7MUlyH_vZ7gtaZn67SUmSeC639K/preview')">🕌 المصحف الشريف (حفص)</button>
-                <button class="card-btn" onclick="openPDF('الأربعون النووية', 'https://drive.google.com/file/d/17_CCdyD2Xl0pcYZn37TYdKro_bV8jce_/preview')">📜 الأربعون النووية</button>
-                <button class="card-btn" onclick="openPDF('قصص الأنبياء - ابن كثير', 'https://drive.google.com/file/d/1t-XIq0hNhKbGh2vupokurjYaSL2kawq8/preview')">📚 قصص الأنبياء (ابن كثير)</button>
-                <button class="card-btn" onclick="openPDF('حصن المسلم', 'https://drive.google.com/file/d/1YR0bcAUfkyi3UytsQ88sW-WbXY0gySyp/preview')">🛡️ حصن المسلم</button>
                 <button class="card-btn" onclick="openPDF('تفسير السعدي', 'https://drive.google.com/file/d/1gDEz9YgA0-CJpIwEJBsu_UyQUB9xONLq/preview')">📖 تفسير السعدي</button>
+
+                <div class="category-title">📚 السيرة والقصص</div>
+                <button class="card-btn" onclick="openPDF('قصص الأنبياء - ابن كثير', 'https://drive.google.com/file/d/1t-XIq0hNhKbGh2vupokurjYaSL2kawq8/preview')">📚 قصص الأنبياء (ابن كثير)</button>
+
+                <div class="category-title">🌱 الرقائق والأذكار</div>
+                <button class="card-btn" onclick="openPDF('رسائل من القرآن', 'https://drive.google.com/file/d/1R50WraOzYC0oVVe59PRS1m1dUbNcN7_4/preview')">📖 رسائل من القرآن</button>
                 <button class="card-btn" onclick="openPDF('رياض الصالحين', 'https://drive.google.com/file/d/1q_PvyIsaCt4cvymeH6pR6hEsGlOwYN67/preview')">🌱 رياض الصالحين</button>
                 <button class="card-btn" onclick="openPDF('الداء والدواء - ابن القيم', 'https://drive.google.com/file/d/112UybXDxHsvvuUeL0V_XaPZHYvS2Zg9n/preview')">💊 الداء والدواء</button>
+                <button class="card-btn" onclick="openPDF('الأربعون النووية', 'https://drive.google.com/file/d/17_CCdyD2Xl0pcYZn37TYdKro_bV8jce_/preview')">📜 الأربعون النووية</button>
+                <button class="card-btn" onclick="openPDF('حصن المسلم', 'https://drive.google.com/file/d/1YR0bcAUfkyi3UytsQ88sW-WbXY0gySyp/preview')">🛡️ حصن المسلم</button>
             </div>
         </div>
 
@@ -295,8 +315,8 @@
         <div id="pdf-viewer-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('library-menu-screen')">◀ المكتبة</button>
-                <div class="section-title" id="pdf-title" style="margin:0; font-size:20px;">الكتاب</div>
-                <div style="width: 80px;"></div>
+                <div class="section-title" id="pdf-title" style="margin:0; font-size:18px;">الكتاب</div>
+                <div style="width: 50px;"></div>
             </div>
             <iframe id="pdf-frame" class="pdf-frame" src="" frameborder="0" allow="autoplay"></iframe>
         </div>
@@ -305,8 +325,8 @@
         <div id="juz-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('riwaya-screen')">◀ رجوع</button>
-                <div class="section-title" style="margin:0;">اختر الجزء</div>
-                <div style="width: 70px;"></div>
+                <div class="section-title" style="margin:0; font-size:22px;">اختر الجزء</div>
+                <div style="width: 50px;"></div>
             </div>
             <div class="badge-container"><span class="riwaya-badge" id="juz-riwaya-badge"></span></div>
             <div class="options-grid">
@@ -325,8 +345,8 @@
         <div id="surah-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('juz-screen')">◀ رجوع</button>
-                <div class="section-title" id="surah-title" style="margin:0; font-size:20px;">السور</div>
-                <div style="width: 70px;"></div>
+                <div class="section-title" id="surah-title" style="margin:0; font-size:18px;">السور</div>
+                <div style="width: 50px;"></div>
             </div>
             <div class="badge-container"><span class="riwaya-badge" id="surah-riwaya-badge"></span></div>
             <div class="surah-list" id="surah-container"></div>
@@ -336,8 +356,8 @@
         <div id="surah-dashboard-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('surah-screen')">◀ السور</button>
-                <div class="section-title" id="dashboard-surah-name" style="margin:0;">السورة</div>
-                <div style="width: 70px;"></div>
+                <div class="section-title" id="dashboard-surah-name" style="margin:0; font-size:20px;">السورة</div>
+                <div style="width: 50px;"></div>
             </div>
             <div class="badge-container"><span class="riwaya-badge" id="dashboard-badge"></span></div>
             
@@ -361,13 +381,15 @@
         <div id="quran-page-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('surah-dashboard-screen')">◀ رجوع</button>
-                <div class="section-title" style="margin:0; font-size:20px;">المصحف والتفسير</div>
-                <div style="width: 70px;"></div>
+                <div class="section-title" style="margin:0; font-size:18px;">المصحف والتفسير</div>
+                <div style="width: 50px;"></div>
             </div>
             <div class="badge-container"><span class="riwaya-badge" id="quran-page-badge"></span></div>
             
             <div class="quran-box">
-                <div class="quran-text" id="quran-text-content"><div class="loader"></div></div>
+                <div id="surah-name-header" class="surah-header-title"></div>
+                <div id="bismillah-container"></div>
+                <div class="quran-text" id="quran-page-content"><div class="loader"></div></div>
             </div>
 
             <div class="tafseer-box" id="tafseer-content"><div class="loader"></div></div>
@@ -377,8 +399,8 @@
         <div id="audio-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('surah-dashboard-screen')">◀ رجوع</button>
-                <div class="section-title" style="margin:0; font-size:20px;">التلاوة الصوتية</div>
-                <div style="width: 70px;"></div>
+                <div class="section-title" style="margin:0; font-size:18px;">التلاوة الصوتية</div>
+                <div style="width: 50px;"></div>
             </div>
             <div class="badge-container"><span class="riwaya-badge" id="audio-badge"></span></div>
             <div class="player-box">
@@ -392,8 +414,8 @@
         <div id="certificate-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('surah-dashboard-screen')">◀ رجوع</button>
-                <div class="section-title" style="margin:0; font-size:20px;">شهادة الحفظ</div>
-                <div style="width: 70px;"></div>
+                <div class="section-title" style="margin:0; font-size:18px;">شهادة الحفظ</div>
+                <div style="width: 50px;"></div>
             </div>
             
             <div class="cert-container" id="cert-input-area">
@@ -408,7 +430,6 @@
                     <div class="certificate-box">
                         <div class="cert-border-inner">
                             
-                            <!-- لوغو مكتبة إسلام -->
                             <div>
                                 <svg class="cert-logo-svg" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/></svg>
                                 <div class="cert-brand-name">مكتبة إسلام</div>
@@ -452,7 +473,6 @@
     </div>
 
     <script>
-        // إعدادات Firebase الخاصة بمشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyDLLEpbpC3yDff8GRU0RA9GdWUW9__96IE",
             authDomain: "maktabat-islam.firebaseapp.com",
@@ -465,14 +485,70 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 🚀 فحص تلقائي عند فتح التطبيق: هل تم التفعيل من قبل في هذا الهاتف؟
+        // 🌟 الفحص الذكي: هل التطبيق مثبت مسبقاً؟ 🌟
         window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('maktabat_islam_activated') === 'true') {
-                goToScreen('riwaya-screen');
-            }
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    
+                    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+                    
+                    if (isStandalone) {
+                        // إذا كان التطبيق مثبتاً، نخفي لافتة التثبيت تماماً
+                        document.getElementById('install-banner-box').classList.add('hidden');
+                    } else {
+                        // إذا كان يفتح في المتصفح عبر QR Code لأول مرة
+                        document.getElementById('install-banner-box').classList.remove('hidden');
+                        if (!localStorage.getItem('install_modal_shown')) {
+                            document.getElementById('install-welcome-modal').classList.remove('hidden');
+                        }
+                    }
+
+                    if (localStorage.getItem('maktabat_islam_activated') === 'true') {
+                        goToScreen('riwaya-screen');
+                    } else {
+                        goToScreen('activation-screen');
+                        document.querySelector('.code-inputs input').focus();
+                    }
+                }, 600);
+            }, 2500);
         });
 
-        // دالة التحقق من الكود سحابياً مع حفظ التفعيل في ذاكرة الهاتف
+        // 📲 برمجة زر تثبيت التطبيق وبدائل الـ Alert
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function triggerInstallFromModal() {
+            document.getElementById('install-welcome-modal').classList.add('hidden');
+            localStorage.setItem('install_modal_shown', 'true');
+            installAppPrompt();
+        }
+
+        function closeInstallModal() {
+            document.getElementById('install-welcome-modal').classList.add('hidden');
+            localStorage.setItem('install_modal_shown', 'true');
+        }
+
+        function installAppPrompt() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        document.getElementById('install-banner-box').classList.add('hidden');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // إظهار النافذة المنظمة بدل الـ Alert القبيحة
+                document.getElementById('custom-install-modal').classList.remove('hidden');
+            }
+        }
+
         async function verifyActivationCode() {
             let inputs = document.querySelectorAll('.code-inputs input');
             let code = "";
@@ -484,7 +560,6 @@
             }
 
             try {
-                // كود تجريبي للتست إذا احتجت تدخلو بسرعة
                 if (code === "11111") {
                     localStorage.setItem('maktabat_islam_activated', 'true');
                     goToScreen('riwaya-screen');
@@ -550,7 +625,7 @@
         function selectRiwaya(btn) {
             document.querySelectorAll('.riwaya-btn').forEach(b => b.classList.remove('selected-card'));
             btn.classList.add('selected-card');
-            selectedRiwaya = btn.innerText;
+            selectedRiwaya = btn.innerText.replace(/^[📖🕌]\s*/, '');
             document.getElementById('next-btn').disabled = false;
         }
 
@@ -623,7 +698,9 @@
             let isWarsh = selectedRiwaya.includes("ورش");
             let riwayaEdition = isWarsh ? "ar.warsh" : "quran-uthmani";
             
-            document.getElementById('quran-text-content').innerHTML = '<div class="loader"></div>';
+            document.getElementById('surah-name-header').innerText = "سُورَةُ " + currentSurahObj.name;
+            document.getElementById('bismillah-container').innerHTML = "";
+            document.getElementById('quran-page-content').innerHTML = '<div class="loader"></div>';
             document.getElementById('tafseer-content').innerHTML = '<div class="loader"></div>';
 
             try {
@@ -636,8 +713,20 @@
                 let tData = await tRes.json();
 
                 let ayahs = qData.data.ayahs;
-                let quranHtml = ayahs.map(a => `${a.text} <span class="ayah-num">۝${a.numberInSurah}</span>`).join(' ');
-                document.getElementById('quran-text-content').innerHTML = quranHtml;
+
+                if (surahNum !== 1 && surahNum !== 9) {
+                    document.getElementById('bismillah-container').innerHTML = '<span class="bismillah-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>';
+                }
+
+                let quranHtml = ayahs.map((a, index) => {
+                    let text = a.text;
+                    if (index === 0 && surahNum !== 1 && surahNum !== 9) {
+                        text = text.replace(/^بِس[^\s]*\s+[^\s]+\s+[^\s]+\s+[^\s]+\s*/, '');
+                    }
+                    return `${text} <span class="ayah-num">۝${a.numberInSurah}</span>`;
+                }).join(' ');
+
+                document.getElementById('quran-page-content').innerHTML = quranHtml;
 
                 let tAyahs = tData.data.ayahs;
                 let tafseerHtml = '<div class="tafseer-title">التفسير الميسر</div>';
@@ -647,7 +736,7 @@
                 document.getElementById('tafseer-content').innerHTML = tafseerHtml;
 
             } catch (e) {
-                document.getElementById('quran-text-content').innerHTML = '<p style="color:red; font-size:16px;">تعذر التحميل. يرجى التأكد من اتصالك بالإنترنت.</p>';
+                document.getElementById('quran-page-content').innerHTML = '<p style="color:red; font-size:16px;">تعذر التحميل. يرجى التأكد من اتصالك بالإنترنت.</p>';
                 document.getElementById('tafseer-content').innerHTML = '';
             }
         }

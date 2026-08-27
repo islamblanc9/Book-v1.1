@@ -155,12 +155,10 @@
                 overflow: visible !important;
             }
             
-            /* إخفاء كل التطبيق ماعدا شاشة الشهادة */
             .screen:not(#certificate-screen) { display: none !important; }
             .header, .sticky-header, #cert-input-area, .btn-print, .footer { display: none !important; }
             .corner-dec, .app-container::before, .app-container::after { display: none !important; }
 
-            /* تحرير الحاوية من كل القيود */
             .app-container {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -208,11 +206,10 @@
                 padding: 20px !important;
             }
 
-            /* تكبير الخطوط لتناسب الورقة */
             .cert-logo-svg { width: 60px !important; margin-bottom: 5px !important; }
             .cert-brand-name { font-size: 18pt !important; margin-bottom: 10px !important; }
             .cert-title-main { font-size: 28pt !important; margin-bottom: 15px !important; }
-            .cert-text { font-size: 16pt !important; margin-bottom: 8px !important; }
+            .cert-text { font-size: 16pt !important; margin-bottom: 8pt !important; }
             .cert-name-val { font-size: 24pt !important; padding: 5px 20px !important; margin-bottom: 15px !important; }
             .cert-surah-val { font-size: 24pt !important; margin-bottom: 20px !important; }
 
@@ -263,7 +260,6 @@
                 <div class="code-inputs">
                     <input type="text" maxlength="1" autofocus><input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1">
                 </div>
-                <!-- زر الدخول مربوط بنظام التحقق السحابي Firebase -->
                 <div class="bottom-actions"><button class="btn-primary" onclick="verifyActivationCode()">دخول</button></div>
             </div>
         </div>
@@ -447,7 +443,7 @@
                     </div>
                 </div>
                 
-                <button class="btn-primary btn-print" style="width: 100%; padding: 15px; margin-top: 15px;" onclick="window.print()">📥 حفظ الشهادة (A4) / طباعة</button>
+                <button class="btn-primary btn-print" style="width: 100%; padding: 15px; margin-top: 15px;" onclick="window.print()">📥 حفظ الشهادة (A5) / طباعة</button>
             </div>
         </div>
 
@@ -470,7 +466,14 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-                // دالة التحقق سحابياً من Firebase (بدون حظر الكود وبأمان تام)
+        // 🚀 فحص تلقائي عند فتح التطبيق لأول مرة: هل تم التفعيل من قبل في هذا الهاتف؟
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('maktabat_islam_activated') === 'true') {
+                goToScreen('riwaya-screen');
+            }
+        });
+
+        // دالة التحقق من الكود سحابياً مع حفظ التفعيل في ذاكرة الهاتف
         async function verifyActivationCode() {
             let inputs = document.querySelectorAll('.code-inputs input');
             let code = "";
@@ -482,8 +485,9 @@
             }
 
             try {
-                // كود تجريبي سريع للتست إذا احتجت تدخلو ديريكت
+                // كود تجريبي للتست إذا احتجت تدخلو بسرعة
                 if (code === "11111") {
+                    localStorage.setItem('maktabat_islam_activated', 'true');
                     goToScreen('riwaya-screen');
                     return;
                 }
@@ -493,14 +497,15 @@
 
                 if (doc.exists) {
                     let data = doc.data();
-                    // التحقق أن الكود صالح (بدون تبديل active إلى false ليبقى مرناً للمشتري)
                     if (data.active === true) {
+                        // حفظ حالة التفعيل في ذاكرة الهاتف كي لا تظهر صفحة التفعيل أبداً بعد اليوم
+                        localStorage.setItem('maktabat_islam_activated', 'true');
                         goToScreen('riwaya-screen');
                     } else {
                         alert("كود التفعيل غير صالح!");
                     }
                 } else {
-                    alert("كود التفعيل غير صحيح! تأكد من كتابة الأرقام الصحيحة الموجودة في كتابك الأصلي.");
+                    alert("كود التفعيل غير صحيح! تأكد من كتابة الرمز الموجود في كتابك.");
                 }
             } catch (e) {
                 alert("خطأ في الاتصال بالإنترنت، يرجى المحاولة مجدداً.");

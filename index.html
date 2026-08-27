@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>الكتاب الذكي - مكتبة إسلام</title>
+    
+    <!-- مكتبات Firebase السحابية للتحقق من الأكواد -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&family=Amiri:wght@400;700&display=swap');
         
@@ -176,7 +181,7 @@
                 position: relative !important;
                 width: 100% !important;
                 height: auto !important;
-                transform: none !important; /* هذا هو السر: نحينا transform لي كانت تقص الورقة */
+                transform: none !important;
                 top: auto !important;
                 left: auto !important;
                 display: block !important;
@@ -258,7 +263,8 @@
                 <div class="code-inputs">
                     <input type="text" maxlength="1" autofocus><input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1"><input type="text" maxlength="1">
                 </div>
-                <div class="bottom-actions"><button class="btn-primary" onclick="goToScreen('riwaya-screen')">دخول</button></div>
+                <!-- زر الدخول مربوط بنظام التحقق السحابي Firebase -->
+                <div class="bottom-actions"><button class="btn-primary" onclick="verifyActivationCode()">دخول</button></div>
             </div>
         </div>
 
@@ -441,7 +447,7 @@
                     </div>
                 </div>
                 
-                <button class="btn-primary btn-print" style="width: 100%; padding: 15px; margin-top: 15px;" onclick="window.print()">📥 حفظ الشهادة (A5) / طباعة</button>
+                <button class="btn-primary btn-print" style="width: 100%; padding: 15px; margin-top: 15px;" onclick="window.print()">📥 حفظ الشهادة (A4) / طباعة</button>
             </div>
         </div>
 
@@ -451,6 +457,49 @@
     </div>
 
     <script>
+        // إعدادات Firebase الخاصة بمشروعك
+        const firebaseConfig = {
+            apiKey: "AIzaSyDLLEpbpC3yDff8GRU0RA9GdWUW9__96IE",
+            authDomain: "maktabat-islam.firebaseapp.com",
+            projectId: "maktabat-islam",
+            storageBucket: "maktabat-islam.firebasestorage.app",
+            messagingSenderId: "440815209195",
+            appId: "1:440815209195:web:db2efcb07f1a40e9948cae",
+            measurementId: "G-J4ZER5Q5MJ"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // دالة التحقق من كود التفعيل سحابياً من Firebase
+        async function verifyActivationCode() {
+            let inputs = document.querySelectorAll('.code-inputs input');
+            let code = "";
+            inputs.forEach(input => code += input.value.trim());
+
+            if (code.length < 5) {
+                alert("الرجاء إدخال كود التفعيل كاملاً (5 خانات)");
+                return;
+            }
+
+            try {
+                let docRef = db.collection("codes").doc(code);
+                let doc = await docRef.get();
+
+                if (doc.exists) {
+                    let data = doc.data();
+                    if (data.active === true) {
+                        goToScreen('riwaya-screen');
+                    } else {
+                        alert("هذا الكود مستخدم مسبقاً!");
+                    }
+                } else {
+                    alert("كود التفعيل غير صحيح!");
+                }
+            } catch (e) {
+                alert("خطأ في الاتصال بالإنترنت، يرجى المحاولة مجدداً.");
+            }
+        }
+
         const allSurahs = [
             { n: 46, name: "الأحقاف", j: "الأحقاف" }, { n: 47, name: "محمد", j: "الأحقاف" }, { n: 48, name: "الفتح", j: "الأحقاف" }, { n: 49, name: "الحجرات", j: "الأحقاف" }, { n: 50, name: "ق", j: "الأحقاف" },
             { n: 51, name: "الذاريات", j: "الذاريات" }, { n: 52, name: "الطور", j: "الذاريات" }, { n: 53, name: "النجم", j: "الذاريات" }, { n: 54, name: "القمر", j: "الذاريات" }, { n: 55, name: "الرحمن", j: "الذاريات" }, { n: 56, name: "الواقعة", j: "الذاريات" }, { n: 57, name: "الحديد", j: "الذاريات" },

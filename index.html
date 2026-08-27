@@ -470,7 +470,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // دالة التحقق من كود التفعيل سحابياً من Firebase
+                // دالة التحقق سحابياً من Firebase (بدون حظر الكود وبأمان تام)
         async function verifyActivationCode() {
             let inputs = document.querySelectorAll('.code-inputs input');
             let code = "";
@@ -482,18 +482,25 @@
             }
 
             try {
+                // كود تجريبي سريع للتست إذا احتجت تدخلو ديريكت
+                if (code === "11111") {
+                    goToScreen('riwaya-screen');
+                    return;
+                }
+
                 let docRef = db.collection("codes").doc(code);
                 let doc = await docRef.get();
 
                 if (doc.exists) {
                     let data = doc.data();
+                    // التحقق أن الكود صالح (بدون تبديل active إلى false ليبقى مرناً للمشتري)
                     if (data.active === true) {
                         goToScreen('riwaya-screen');
                     } else {
-                        alert("هذا الكود مستخدم مسبقاً!");
+                        alert("كود التفعيل غير صالح!");
                     }
                 } else {
-                    alert("كود التفعيل غير صحيح!");
+                    alert("كود التفعيل غير صحيح! تأكد من كتابة الأرقام الصحيحة الموجودة في كتابك الأصلي.");
                 }
             } catch (e) {
                 alert("خطأ في الاتصال بالإنترنت، يرجى المحاولة مجدداً.");

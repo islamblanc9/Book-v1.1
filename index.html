@@ -7,6 +7,11 @@
     
     <meta name="theme-color" content="#1a8c4b">
     
+    <!-- ربط ملفات التطبيق للتثبيت (PWA) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
     <!-- مكتبات Firebase السحابية للتحقق من الأكواد -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -87,7 +92,7 @@
         .selected-card { background-color: #1a8c4b !important; color: #fff !important; border-color: #1a8c4b !important; }
         .selected-card::before { transform: scaleY(1); background-color: #d4af37; }
 
-        /* 🌟 ستايل قسم التواصل الاجتماعي (تيليجرام، فيسبوك، إنستا) 🌟 */
+        /* 🌟 ستايل قسم التواصل الاجتماعي 🌟 */
         .social-section { margin-top: 15px; padding-top: 15px; border-top: 2px dashed #1a8c4b; text-align: center; width: 100%; margin-bottom: 20px; }
         .social-title { font-size: 14px; color: #1a8c4b; font-weight: 900; margin-bottom: 12px; font-family: 'Tajawal', sans-serif; }
         
@@ -187,6 +192,22 @@
 
         .footer { text-align: center; padding: 10px 20px 20px; z-index: 12; font-size: 10px; color: #666; width: 100%; flex-shrink: 0; }
         .footer strong { color: #1a8c4b; font-size: 11px; }
+
+        /* 🌟 ستايل نافذة التثبيت للأندرويد فقط 🌟 */
+        .install-banner {
+            position: fixed; bottom: -100px; left: 0; width: 100%;
+            background: #fff; padding: 15px 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10000; transition: bottom 0.5s ease; border-top-left-radius: 20px; border-top-right-radius: 20px;
+        }
+        .install-banner.show { bottom: 0; }
+        .install-info { display: flex; align-items: center; gap: 12px; }
+        .install-icon { width: 40px; height: 40px; background: #1a8c4b; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: white;}
+        .install-text h4 { margin: 0 0 4px 0; color: #1a8c4b; font-size: 14px; font-weight: 900; }
+        .install-text p { margin: 0; color: #666; font-size: 11px; }
+        .install-btn { background: #d4af37; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Tajawal', sans-serif;}
+        .close-install { background: none; border: none; color: #999; font-size: 20px; padding: 0; margin-right: 10px; cursor: pointer;}
+
     </style>
 </head>
 <body>
@@ -233,17 +254,15 @@
             <div class="library-divider"><span>أو</span></div>
             <button class="library-btn" onclick="goToScreen('library-menu-screen')">📚 دخول المكتبة الرقمية</button>
 
-            <!-- 🌟 أزرار التواصل الاجتماعي (منتدى تليجرام، فيسبوك، إنستا) 🌟 -->
+            <!-- 🌟 أزرار التواصل الاجتماعي 🌟 -->
             <div class="social-section">
                 <div class="social-title">تواصل معنا وانضم لمجتمعنا</div>
                 
-                <!-- زر تيليجرام -->
                 <a href="YOUR_TELEGRAM_LINK_HERE" target="_blank" class="telegram-btn">
                     <svg class="social-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.18-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.21 3.45-.49.33-.94.5-1.34.49-.44-.01-1.28-.24-1.91-.45-.78-.25-1.39-.38-1.34-.81.03-.22.34-.44.93-.68 3.63-1.58 6.05-2.63 7.27-3.13 3.45-1.43 4.17-1.68 4.64-1.69.1 0 .32.02.46.12.12.09.16.22.18.34.02.13.02.26.01.39z"/></svg>
                     مُلتقى الكتاب الذكي 📚 (منتدى الحفظة)
                 </a>
                 
-                <!-- زرين صغار (فيسبوك + انستا) -->
                 <div class="small-socials">
                     <a href="https://www.facebook.com/share/1M2vWB3o64/" target="_blank" class="social-icon-btn">
                         <svg class="social-svg" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H7v-3h3V9.5C10 6.57 11.74 5 14.38 5c1.29 0 2.64.23 2.64.23v2.9h-1.49c-1.46 0-1.91.91-1.91 1.83V12h3.25l-.52 3h-2.73v6.8c4.56-.93 8-4.96 8-9.8z"/></svg>
@@ -257,7 +276,7 @@
             </div>
         </div>
 
-        <!-- قائمة المكتبة الرقمية -->
+        <!-- قائمة المكتبة الرقمية (مفصولة) -->
         <div id="library-menu-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('riwaya-screen')">◀ رجوع</button>
@@ -267,8 +286,9 @@
             
             <div class="options-grid" style="padding-bottom: 20px;">
                 
-                <div class="category-title">🎧 الرقية والكهف والبقرة</div>
-                <button class="card-btn" onclick="goToScreen('kahf-baqarah-screen'); initKahfAudio();">🎥🎧 سورة الكهف والبقرة</button>
+                <div class="category-title">🎧 الكهف والبقرة والرقية</div>
+                <button class="card-btn" onclick="goToScreen('baqarah-screen'); initBaqarahAudio();">🎥🎧 سورة البقرة</button>
+                <button class="card-btn" onclick="goToScreen('kahf-screen'); initKahfAudio();">🎥🎧 سورة الكهف</button>
                 <button class="card-btn" onclick="goToScreen('ruqyah-screen')">🎥🎧 الرقية الشرعية</button>
 
                 <div class="category-title">🕌 المصاحف والتفاسير</div>
@@ -309,11 +329,33 @@
             </div>
         </div>
 
-        <!-- 🌟 شاشة سورة الكهف والبقرة 🌟 -->
-        <div id="kahf-baqarah-screen" class="screen hidden">
+        <!-- 🌟 شاشة سورة البقرة 🌟 -->
+        <div id="baqarah-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('library-menu-screen')">◀ المكتبة</button>
-                <div class="section-title" style="margin:0; font-size:20px;">الكهف والبقرة</div>
+                <div class="section-title" style="margin:0; font-size:20px;">سورة البقرة</div>
+                <div style="width: 50px;"></div>
+            </div>
+
+            <div class="audio-box" style="padding-bottom: 5px;">
+                <h4 style="color:#1a8c4b; margin: 0 0 10px 0; font-family:'Tajawal', sans-serif;">🎥 تلاوة هادئة (فيديو)</h4>
+                <div class="video-box">
+                    <iframe src="YOUR_BAQARAH_VIDEO_LINK_HERE/preview" allow="autoplay; fullscreen"></iframe>
+                </div>
+            </div>
+
+            <div class="audio-box">
+                <h4 style="color:#1a8c4b; margin: 0 0 10px 0; font-family:'Tajawal', sans-serif;">🎧 اختر القارئ (صوت)</h4>
+                <select class="reciter-select" id="baqarah-reciter-dropdown" onchange="changeBaqarahAudio()"></select>
+                <audio id="baqarah-audio" controls style="width:100%; height: 40px; margin-top: 5px;" src=""></audio>
+            </div>
+        </div>
+
+        <!-- 🌟 شاشة سورة الكهف 🌟 -->
+        <div id="kahf-screen" class="screen hidden">
+            <div class="sticky-header">
+                <button class="btn-back-top" onclick="goToScreen('library-menu-screen')">◀ المكتبة</button>
+                <div class="section-title" style="margin:0; font-size:20px;">سورة الكهف</div>
                 <div style="width: 50px;"></div>
             </div>
 
@@ -325,13 +367,9 @@
             </div>
 
             <div class="audio-box">
-                <h4 style="color:#1a8c4b; margin: 0 0 10px 0; font-family:'Tajawal', sans-serif;">🎧 اختر القارئ والسورة (صوت)</h4>
-                <select class="reciter-select" id="kb-surah-dropdown" onchange="changeKBAudio()">
-                    <option value="018">سورة الكهف</option>
-                    <option value="002">سورة البقرة</option>
-                </select>
-                <select class="reciter-select" id="kb-reciter-dropdown" onchange="changeKBAudio()"></select>
-                <audio id="kb-audio" controls style="width:100%; height: 40px; margin-top: 5px;" src=""></audio>
+                <h4 style="color:#1a8c4b; margin: 0 0 10px 0; font-family:'Tajawal', sans-serif;">🎧 اختر القارئ (صوت)</h4>
+                <select class="reciter-select" id="kahf-reciter-dropdown" onchange="changeKahfAudio()"></select>
+                <audio id="kahf-audio" controls style="width:100%; height: 40px; margin-top: 5px;" src=""></audio>
             </div>
         </div>
 
@@ -398,7 +436,7 @@
             </div>
         </div>
 
-        <!-- شاشة الآيات والتلاوة الصوتية المدمجة والمرنة -->
+        <!-- شاشة الآيات والتلاوة الصوتية المدمجة -->
         <div id="quran-page-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('surah-dashboard-screen')">◀ رجوع</button>
@@ -493,6 +531,24 @@
         <div class="footer">
             جميع الحقوق والنشر والطبع محفوظة<br><strong>لدى مكتبة إسلام - عنابة ©</strong>
         </div>
+        
+    </div>
+
+    <!-- نافذة التثبيت الأنيقة للأندرويد -->
+    <div class="install-banner" id="install-banner">
+        <div class="install-info">
+            <button class="close-install" onclick="closeInstallBanner()">×</button>
+            <div class="install-icon">
+                <svg viewBox="0 0 24 24" style="width: 24px; fill: none; stroke: #fff; stroke-width: 2;">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/>
+                </svg>
+            </div>
+            <div class="install-text">
+                <h4>الكتاب الذكي</h4>
+                <p>ثبت التطبيق لتجربة أسرع وأفضل</p>
+            </div>
+        </div>
+        <button class="install-btn" id="install-btn">تثبيت الآن</button>
     </div>
 
     <script>
@@ -602,9 +658,13 @@
             target.scrollTop = 0;
             
             // إيقاف الصوتيات إذا غادر شاشتها
-            if(screenId !== 'kahf-baqarah-screen' && screenId !== 'quran-page-screen' && screenId !== 'ruqyah-screen') {
-                document.getElementById('kb-audio').pause();
-                document.getElementById('quran-audio').pause();
+            if(screenId !== 'kahf-screen' && screenId !== 'baqarah-screen' && screenId !== 'quran-page-screen' && screenId !== 'ruqyah-screen') {
+                let baudio = document.getElementById('baqarah-audio');
+                if(baudio) baudio.pause();
+                let kaudio = document.getElementById('kahf-audio');
+                if(kaudio) kaudio.pause();
+                let qaudio = document.getElementById('quran-audio');
+                if(qaudio) qaudio.pause();
                 let ruqyahAudio = document.querySelector('#ruqyah-screen audio');
                 if(ruqyahAudio) ruqyahAudio.pause();
             }
@@ -682,9 +742,9 @@
             if(isPlaying) audioPlayer.play();
         }
 
-        // 🌟 دالة خاصة بمشغل سورة الكهف والبقرة في المكتبة الرقمية
-        function initKahfAudio() {
-            const dropdown = document.getElementById('kb-reciter-dropdown');
+        // 🌟 دالة مشتركة لتعبئة قائمة القراء لسورة الكهف والبقرة 🌟
+        function initLibraryAudioDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
             if(dropdown.options.length === 0) {
                 let optgroupWarsh = document.createElement('optgroup');
                 optgroupWarsh.label = "قراء رواية ورش";
@@ -697,16 +757,33 @@
                 dropdown.appendChild(optgroupWarsh);
                 dropdown.appendChild(optgroupHafs);
             }
-            changeKBAudio();
         }
 
-        function changeKBAudio() {
-            let surahNum = document.getElementById('kb-surah-dropdown').value;
-            let reciterUrl = document.getElementById('kb-reciter-dropdown').value;
-            let player = document.getElementById('kb-audio');
-            
+        // 🌟 دوال سورة البقرة 🌟
+        function initBaqarahAudio() {
+            initLibraryAudioDropdown('baqarah-reciter-dropdown');
+            changeBaqarahAudio();
+        }
+
+        function changeBaqarahAudio() {
+            let reciterUrl = document.getElementById('baqarah-reciter-dropdown').value;
+            let player = document.getElementById('baqarah-audio');
             let isPlaying = !player.paused && player.currentTime > 0;
-            player.src = `${reciterUrl}/${surahNum}.mp3`;
+            player.src = `${reciterUrl}/002.mp3`;
+            if(isPlaying) player.play();
+        }
+
+        // 🌟 دوال سورة الكهف 🌟
+        function initKahfAudio() {
+            initLibraryAudioDropdown('kahf-reciter-dropdown');
+            changeKahfAudio();
+        }
+
+        function changeKahfAudio() {
+            let reciterUrl = document.getElementById('kahf-reciter-dropdown').value;
+            let player = document.getElementById('kahf-audio');
+            let isPlaying = !player.paused && player.currentTime > 0;
+            player.src = `${reciterUrl}/018.mp3`;
             if(isPlaying) player.play();
         }
 
@@ -781,6 +858,47 @@
             input.addEventListener('input', () => { if (input.value.length === 1 && index < arr.length - 1) arr[index + 1].focus(); });
             input.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && input.value === '' && index > 0) arr[index - 1].focus(); });
         });
+
+        // ==========================================
+        // 🌟 سكربت التثبيت (PWA) الخاص بالأندرويد 🌟
+        // ==========================================
+        
+        // تسجيل الـ Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(function() {
+                console.log('Service Worker Registered');
+            }).catch(function(error) {
+                console.log('Service Worker Registration Failed:', error);
+            });
+        }
+
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+        const installBtn = document.getElementById('install-btn');
+
+        // كشف الهاتف وإظهار النافذة
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            setTimeout(() => { installBanner.classList.add('show'); }, 2000);
+        });
+
+        // كي يكليكي الزبون على "تثبيت الآن"
+        installBtn.addEventListener('click', async () => {
+            installBanner.classList.remove('show');
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); 
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        function closeInstallBanner() {
+            installBanner.classList.remove('show');
+        }
     </script>
 </body>
 </html>

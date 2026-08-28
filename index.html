@@ -207,7 +207,7 @@
         .install-text p { margin: 0; color: #666; font-size: 11px; }
         .install-btn { background: #d4af37; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Tajawal', sans-serif;}
         .close-install { background: none; border: none; color: #999; font-size: 20px; padding: 0; margin-right: 10px; cursor: pointer;}
-        @keyframes pulseBtn { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
     </style>
 </head>
 <body>
@@ -245,21 +245,6 @@
 
         <!-- 🌟 شاشة اختيار الرواية + مجتمع الكتاب الذكي 🌟 -->
         <div id="riwaya-screen" class="screen hidden">
-
-            <!-- رسالة التثبيت الاختيارية (التعديل الذي طلبته) -->
-            <div id="install-option-container" style="display: none; margin-bottom: 25px;">
-                <button onclick="triggerInstall()" style="background: linear-gradient(135deg, #1a8c4b 0%, #146c38 100%); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-size: 16px; font-weight: 900; font-family: 'Tajawal', sans-serif; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(26,140,75,0.3); animation: pulseBtn 2s infinite;">
-                    <svg viewBox="0 0 24 24" style="width: 24px; fill: none; stroke: #fff; stroke-width: 2;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/></svg>
-                    تثبيت التطبيق على الجهاز 📥
-                </button>
-                <div style="background: #f4fcf7; border: 1px dashed #1a8c4b; border-radius: 10px; padding: 10px; text-align: center;">
-                    <p style="margin: 0; color: #1a8c4b; font-size: 11px; font-weight: bold; line-height: 1.5;">
-                        <span style="color: #d4af37;">ملاحظة لأجهزة سامسونج:</span><br>
-                        يُفضل التثبيت باستخدام متصفح <b>Samsung Internet</b>.
-                    </p>
-                </div>
-            </div>
-
             <div class="section-title">مسار الحفظ</div>
             <div class="options-grid" style="margin-top: 15px;">
                 <button class="card-btn riwaya-btn" onclick="selectRiwaya('رواية ورش عن نافع')">📖 رواية ورش عن نافع</button>
@@ -595,14 +580,10 @@
             }, 2000);
         });
 
-        // 🌟 دالة التفعيل المعدلة (تمت إضافة is230 مع الحفاظ على فايربيس) 🌟
         async function verifyActivationCode() {
             let inputs = document.querySelectorAll('.code-inputs input');
             let code = "";
             inputs.forEach(input => code += input.value.trim());
-
-            // تحويل الحروف باش يقبل is230 بالحروف الكبيرة أو الصغيرة
-            code = code.toLowerCase();
 
             if (code.length < 5) {
                 alert("الرجاء إدخال كود التفعيل كاملاً (5 خانات)");
@@ -610,14 +591,12 @@
             }
 
             try {
-                // التعديل 1: كود الأدمن الخاص بك
-                if (code === "is230") {
+                if (code === "11111") {
                     localStorage.setItem('maktabat_islam_activated', 'true');
                     goToScreen('riwaya-screen');
                     return;
                 }
 
-                // الكود الأصلي لفايربيس كما بعثته (لم يتم حذفه)
                 let docRef = db.collection("codes").doc(code);
                 let doc = await docRef.get();
 
@@ -897,40 +876,24 @@
         const installBanner = document.getElementById('install-banner');
         const installBtn = document.getElementById('install-btn');
 
-        // التعديل 2: إظهار النافذة الاختيارية في واجهة الحفظ
+        // كشف الهاتف وإظهار النافذة
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            
-            // إظهار قسم التثبيت في الشاشة الرئيسية كخيار
-            const installContainer = document.getElementById('install-option-container');
-            if (installContainer) installContainer.style.display = 'block';
-            
-            // احتفظنا بالنافذة السفلية كذلك إذا كان يحتاجها
             setTimeout(() => { installBanner.classList.add('show'); }, 2000);
         });
 
-        // دالة التثبيت للزر الاختياري
-        async function triggerInstall() {
+        // كي يكليكي الزبون على "تثبيت الآن"
+        installBtn.addEventListener('click', async () => {
+            installBanner.classList.remove('show');
             if (deferredPrompt) {
                 deferredPrompt.prompt(); 
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    // إخفاء الزر بعد التثبيت
-                    const installContainer = document.getElementById('install-option-container');
-                    if (installContainer) installContainer.style.display = 'none';
-                    installBanner.classList.remove('show');
+                    console.log('User accepted the install prompt');
                 }
                 deferredPrompt = null;
-            } else {
-                alert("إذا لم تظهر رسالة التثبيت، يرجى الضغط على الثلاث نقاط بالأعلى ثم اختيار 'تثبيت التطبيق' (Install app) أو (Add to Home screen).");
             }
-        }
-
-        // كي يكليكي الزبون على "تثبيت الآن" من النافذة السفلية القديمة
-        installBtn.addEventListener('click', async () => {
-            installBanner.classList.remove('show');
-            triggerInstall();
         });
 
         function closeInstallBanner() {

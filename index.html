@@ -500,7 +500,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 🌟 قاعدة بيانات السور (كاملة) 🌟
+        // 🌟 قاعدة بيانات السور (كاملة 114) 🌟
         const allSurahs = [
             { n: 46, name: "الأحقاف", j: "الأحقاف" }, { n: 47, name: "محمد", j: "الأحقاف" }, { n: 48, name: "الفتح", j: "الأحقاف" }, { n: 49, name: "الحجرات", j: "الأحقاف" }, { n: 50, name: "ق", j: "الأحقاف" },
             { n: 51, name: "الذاريات", j: "الذاريات" }, { n: 52, name: "الطور", j: "الذاريات" }, { n: 53, name: "النجم", j: "الذاريات" }, { n: 54, name: "القمر", j: "الذاريات" }, { n: 55, name: "الرحمن", j: "الذاريات" }, { n: 56, name: "الواقعة", j: "الذاريات" }, { n: 57, name: "الحديد", j: "الذاريات" },
@@ -517,13 +517,19 @@
             { name: "طارق عبدالغني دعوب (ورش)", url: "https://server10.mp3quran.net/tareq" }
         ];
 
-        // 🌟 قراء حفص 🌟
+        // 🌟 قراء حفص (كاملين 11 قارئ) 🌟
         const recitersHafs = [
             { name: "مشاري العفاسي (حفص)", url: "https://server8.mp3quran.net/afs" },
             { name: "فارس عباد (حفص)", url: "https://server8.mp3quran.net/frs_a" },
             { name: "عبدالرحمن السديس (حفص)", url: "https://server11.mp3quran.net/sds" },
             { name: "ماهر المعيقلي (حفص)", url: "https://server12.mp3quran.net/maher" },
-            { name: "عبدالباسط عبدالصمد (حفص)", url: "https://server7.mp3quran.net/basit" }
+            { name: "عبدالباسط عبدالصمد (حفص)", url: "https://server7.mp3quran.net/basit" },
+            { name: "سعد الغامدي (حفص)", url: "https://server7.mp3quran.net/s_gmd" },
+            { name: "محمد صديق المنشاوي (حفص)", url: "https://server10.mp3quran.net/minsh" },
+            { name: "محمود خليل الحصري (حفص)", url: "https://server13.mp3quran.net/husr" },
+            { name: "أحمد العجمي (حفص)", url: "https://server10.mp3quran.net/ajm" },
+            { name: "ناصر القطامي (حفص)", url: "https://server6.mp3quran.net/qtm" },
+            { name: "ياسر الدوسري (حفص)", url: "https://server11.mp3quran.net/yasser" }
         ];
 
         let selectedRiwaya = "";
@@ -552,6 +558,7 @@
             let code = "";
             inputs.forEach(input => code += input.value.trim());
 
+            // تحويل الحروف إلى صغيرة باش يقبل (is230) أو (IS230)
             code = code.toLowerCase();
 
             if (code.length < 5) { alert("الرجاء إدخال كود التفعيل كاملاً"); return; }

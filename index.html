@@ -76,13 +76,8 @@
         }
         .btn-back-top { background-color: #f4fcf7; color: #1a8c4b; border: 1.5px solid #1a8c4b; padding: 5px 12px; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-weight: bold; cursor: pointer; display: flex; align-items: center; font-size: 13px; }
 
-        /* 🌟 ستايلات شاشة حول التطبيق 🌟 */
-        .security-badge { background: #e8f5e9; border: 1.5px solid #4caf50; color: #2e7d32; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .about-box { background: #fdfdfc; border: 1.5px solid #d4af37; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
-        .about-box h4 { color: #1a8c4b; margin: 0 0 10px 0; font-size: 16px; font-weight: 900; border-bottom: 1px dashed #d4af37; padding-bottom: 5px; }
-        .feature-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; color: #444; font-weight: bold; }
-        .feature-item svg { width: 20px; height: 20px; fill: #d4af37; flex-shrink: 0; }
-        .btn-install-large { background: linear-gradient(135deg, #1a8c4b 0%, #146c38 100%); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-size: 16px; font-weight: 900; font-family: 'Tajawal', sans-serif; margin-bottom: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(26,140,75,0.3); animation: pulseBtn 2s infinite; }
+        /* 🌟 ستايل زر التثبيت الكبير 🌟 */
+        .btn-install-large { background: linear-gradient(135deg, #1a8c4b 0%, #146c38 100%); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-size: 16px; font-weight: 900; font-family: 'Tajawal', sans-serif; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(26,140,75,0.3); animation: pulseBtn 2s infinite; }
         @keyframes pulseBtn { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
         .badge-container { text-align: center; width: 100%; margin-bottom: 15px; flex-shrink: 0; }
@@ -213,47 +208,23 @@
             </div>
         </div>
 
-        <!-- 🌟 شاشة حول التطبيق (إجبارية التثبيت) 🌟 -->
-        <div id="about-screen" class="screen hidden">
-            <div class="section-title" style="font-size: 22px;">مرحباً بك في الكتاب الذكي</div>
-            
-            <div class="security-badge">
-                <svg viewBox="0 0 24 24" style="width: 20px; fill: #2e7d32;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-                تطبيق آمن 100%، نظيف ومحمي
-            </div>
-
-            <button id="about-install-btn" class="btn-install-large" onclick="triggerInstall()">
-                <svg viewBox="0 0 24 24" style="width: 24px; fill: none; stroke: #fff; stroke-width: 2;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/></svg>
-                اضغط هنا لتثبيت التطبيق 📥
-            </button>
-
-            <div class="about-box">
-                <h4>ماذا يوجد داخل التطبيق؟</h4>
-                <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> <span>مصحف رقمي تفاعلي (ورش وحفص)</span></div>
-                <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> <span>تلاوات صوتية لكبار القراء</span></div>
-                <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> <span>تفسير ميسر لكل آية</span></div>
-                <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> <span>استخراج شهادات حفظ ذكية</span></div>
-                <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> <span>مكتبة شاملة (أذكار، رقية، قصص)</span></div>
-            </div>
-
-            <div style="text-align: center; color: #1a8c4b; font-size: 12px; margin-bottom: 15px; font-weight: bold;">
-                تطوير وإشراف: مكتبة إسلام - عنابة ©
-            </div>
-
-            <div style="background: #f4fcf7; border: 1px dashed #1a8c4b; border-radius: 10px; padding: 12px; text-align: center; width: 100%;">
-                <p style="margin: 0; color: #1a8c4b; font-size: 11px; font-weight: bold; line-height: 1.6;">
-                    <span style="color: #d4af37;">ملاحظة لأجهزة سامسونج:</span><br>
-                    يُفضل التثبيت باستخدام متصفح <b>Samsung Internet</b>.
-                </p>
-            </div>
-
-            <div class="bottom-actions">
-                <button class="btn-primary" onclick="startAppJourney()">ابدأ رحلة الحفظ 🚀</button>
-            </div>
-        </div>
-
-        <!-- 🌟 شاشة الرواية 🌟 -->
+        <!-- 🌟 شاشة الواجهة الرئيسية (مسار الحفظ) 🌟 -->
         <div id="riwaya-screen" class="screen hidden">
+            
+            <!-- رسالة التثبيت الاختيارية (تظهر فقط إذا كان التطبيق غير مثبت) -->
+            <div id="install-option-container" style="display: none; margin-bottom: 25px;">
+                <button class="btn-install-large" onclick="triggerInstall()">
+                    <svg viewBox="0 0 24 24" style="width: 24px; fill: none; stroke: #fff; stroke-width: 2;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/></svg>
+                    تثبيت التطبيق على الجهاز 📥
+                </button>
+                <div style="background: #f4fcf7; border: 1px dashed #1a8c4b; border-radius: 10px; padding: 10px; text-align: center;">
+                    <p style="margin: 0; color: #1a8c4b; font-size: 11px; font-weight: bold; line-height: 1.5;">
+                        <span style="color: #d4af37;">ملاحظة لأجهزة سامسونج:</span><br>
+                        يُفضل التثبيت باستخدام متصفح <b>Samsung Internet</b>.
+                    </p>
+                </div>
+            </div>
+
             <div class="section-title">مسار الحفظ</div>
             <div class="options-grid" style="margin-top: 15px;">
                 <button class="card-btn riwaya-btn" onclick="selectRiwaya('رواية ورش عن نافع')">📖 رواية ورش عن نافع</button>
@@ -559,11 +530,6 @@
         let selectedJuz = "";
         let currentSurahObj = null;
 
-        // --- PWA و فحص التثبيت ---
-        function isAppInstalled() {
-            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        }
-
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
@@ -571,11 +537,7 @@
                 setTimeout(() => {
                     splash.style.display = 'none';
                     if (localStorage.getItem('maktabat_islam_activated') === 'true') {
-                        if(isAppInstalled()) {
-                            goToScreen('riwaya-screen');
-                        } else {
-                            goToScreen('about-screen');
-                        }
+                        goToScreen('riwaya-screen');
                     } else {
                         goToScreen('activation-screen');
                         document.querySelector('.code-inputs input').focus();
@@ -590,7 +552,6 @@
             let code = "";
             inputs.forEach(input => code += input.value.trim());
 
-            // تحويل الحروف إلى صغيرة باش يقبل (is230) أو (IS230)
             code = code.toLowerCase();
 
             if (code.length < 5) { alert("الرجاء إدخال كود التفعيل كاملاً"); return; }
@@ -599,7 +560,7 @@
                 // كود الحماية الخاص بالأدمن
                 if (code === "is230") {
                     localStorage.setItem('maktabat_islam_activated', 'true');
-                    goToScreen('about-screen');
+                    goToScreen('riwaya-screen');
                     return;
                 }
                 
@@ -607,7 +568,7 @@
                 let doc = await docRef.get();
                 if (doc.exists && doc.data().active === true) {
                     localStorage.setItem('maktabat_islam_activated', 'true');
-                    goToScreen('about-screen');
+                    goToScreen('riwaya-screen');
                 } else {
                     alert("كود التفعيل غير صالح أو غير صحيح!");
                 }
@@ -616,23 +577,18 @@
             }
         }
 
-        function startAppJourney() {
-            if (isAppInstalled()) {
-                goToScreen('riwaya-screen');
-            } else {
-                alert("⚠️ تنبيه أمني:\nلضمان حفظ بياناتك واستخدام التطبيق بدون إنترنت مستقبلاً، يجب عليك تثبيت التطبيق أولاً.\n👉 اضغط على الزر الأخضر (تثبيت التطبيق).");
-                if (deferredPrompt) triggerInstall();
-            }
-        }
-
         // --- PWA Installation Logic ---
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').then(function(reg) { reg.update(); });
         }
+        
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+            // إظهار قسم التثبيت في الشاشة الرئيسية كخيار
+            const installContainer = document.getElementById('install-option-container');
+            if (installContainer) installContainer.style.display = 'block';
         });
 
         async function triggerInstall() {
@@ -640,8 +596,8 @@
                 deferredPrompt.prompt(); 
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    document.getElementById('about-install-btn').innerHTML = "✅ جاري التثبيت... اضغط ابدأ رحلة الحفظ";
-                    document.getElementById('about-install-btn').style.background = "#d4af37";
+                    // إخفاء الزر بعد التثبيت
+                    document.getElementById('install-option-container').style.display = 'none';
                 }
                 deferredPrompt = null;
             } else {

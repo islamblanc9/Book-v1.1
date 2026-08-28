@@ -134,15 +134,28 @@
         .splash-loader { border-width: 3px; width: 30px; height: 30px; margin-top: 30px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* 🎓 ستايل الشهادة 🎓 */
+        /* 🎓 ستايل الشهادة الأصلي والفخم 🎓 */
         .cert-container { background: #fff; border: 2px solid #1a8c4b; border-radius: 12px; padding: 20px; text-align: center; margin-top: 10px; }
         .cert-input-name { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; font-family: 'Tajawal', sans-serif; margin-bottom: 15px; text-align: center; outline: none; }
+        .cert-input-name:focus { border-color: #d4af37; }
         .certificate-wrapper { margin-top: 20px; width: 100%; }
         .certificate-box { background: #fffdf9; border: 6px solid #d4af37; padding: 15px; text-align: center; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .cert-border-inner { border: 2px solid #1a8c4b; padding: 15px; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .cert-logo-svg { width: 45px; fill: none; stroke: #1a8c4b; stroke-width: 1.5; margin-bottom: 5px; }
+        .cert-brand-name { color: #1a8c4b; font-weight: 900; font-family: 'Tajawal', sans-serif; font-size: 14px; margin-bottom: 15px; }
         .cert-title-main { color: #d4af37; font-size: 22px; font-weight: 900; font-family: 'Amiri', serif; margin-bottom: 10px; }
+        .cert-text { font-size: 13px; color: #333; margin-bottom: 8px; font-family: 'Amiri', serif; }
         .cert-name-val { color: #1a8c4b; font-size: 20px; font-weight: 900; margin: 5px 0 10px; border-bottom: 2px dashed #d4af37; padding: 0 20px 5px; display: inline-block; }
         .cert-surah-val { color: #d4af37; font-size: 20px; font-weight: bold; font-family: 'Amiri', serif; margin-bottom: 15px; }
+        .cert-footer-grid { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; padding: 0 5px; margin-top: 10px; }
+        .cert-sign-area { text-align: center; }
+        .cert-sign-text { font-family: 'Tajawal', sans-serif; font-size: 11px; font-weight: bold; color: #333; margin-bottom: 5px; }
+        .cert-signature { width: 50px; opacity: 0.8; transform: rotate(-5deg); }
+        .cert-stamp { width: 60px; height: 60px; border: 2px solid #1e3a8a; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-align: center; color: #1e3a8a; font-family: 'Tajawal', sans-serif; transform: rotate(-15deg); opacity: 0.85; box-shadow: inset 0 0 0 2px #1e3a8a; padding: 2px; }
+        .cert-stamp-inner { border: 1px dashed #1e3a8a; width: 100%; height: 100%; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .cert-stamp-inner span:first-child { font-size: 8px; font-weight: bold; }
+        .cert-stamp-inner span:last-child { font-size: 10px; font-weight: 900; }
+        .cert-note { font-size: 9px; color: #666; margin-top: 15px; font-style: italic; }
 
         @media print {
             @page { size: landscape; margin: 10mm; }
@@ -151,6 +164,9 @@
             .header, .sticky-header, #cert-input-area, .btn-print, .footer, #splash-screen { display: none !important; }
             .corner-dec, .app-container::before, .app-container::after { display: none !important; }
             .app-container { width: 100% !important; max-width: 100% !important; height: auto !important; box-shadow: none !important; }
+            .certificate-wrapper { margin-top: 0 !important; }
+            .certificate-box { box-shadow: none !important; }
+            .cert-border-inner { border-width: 2px !important; padding: 20px !important; }
         }
 
         .library-divider { border-top: 2px dashed #1a8c4b; margin: 15px 0 10px; position: relative; }
@@ -197,7 +213,7 @@
             </div>
         </div>
 
-        <!-- 🌟 شاشة حول التطبيق 🌟 -->
+        <!-- 🌟 شاشة حول التطبيق (إجبارية التثبيت) 🌟 -->
         <div id="about-screen" class="screen hidden">
             <div class="section-title" style="font-size: 22px;">مرحباً بك في الكتاب الذكي</div>
             
@@ -438,7 +454,7 @@
             <div class="tafseer-box" id="tafseer-content"><div class="loader"></div></div>
         </div>
 
-        <!-- 🎓 شاشة شهادة الحفظ 🎓 -->
+        <!-- 🎓 شاشة شهادة الحفظ الأصلية والفخمة 🎓 -->
         <div id="certificate-screen" class="screen hidden">
             <div class="sticky-header">
                 <button class="btn-back-top" onclick="goToScreen('surah-dashboard-screen')">◀ رجوع</button>
@@ -457,9 +473,36 @@
                 <div class="certificate-wrapper">
                     <div class="certificate-box">
                         <div class="cert-border-inner">
+                            
+                            <div>
+                                <svg class="cert-logo-svg" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/></svg>
+                                <div class="cert-brand-name">مكتبة إسلام</div>
+                            </div>
+                            
                             <div class="cert-title-main">شَهَادَةُ حِفْظٍ وَتِلَاوَة</div>
+                            <div class="cert-text">يشهد تطبيق "الكتاب الذكي" التابع لمكتبة إسلام - عنابة أن:</div>
                             <div class="cert-name-val" id="cert-user-name">الاسم</div>
+                            <div class="cert-text">قد أتم بفضل الله وتوفيقه حفظ وتلاوة:</div>
                             <div class="cert-surah-val" id="cert-surah-name">السورة</div>
+                            
+                            <div class="cert-footer-grid">
+                                <div class="cert-sign-area">
+                                    <div class="cert-sign-text">الإدارة والتوقيع</div>
+                                    <svg class="cert-signature" viewBox="0 0 100 40" fill="none" stroke="#000" stroke-width="2">
+                                        <path d="M10,30 Q30,10 40,25 T60,15 T80,35 Q90,20 95,25"/>
+                                    </svg>
+                                </div>
+                                
+                                <div class="cert-stamp">
+                                    <div class="cert-stamp-inner">
+                                        <span>مُعتمَد</span>
+                                        <span>مكتبة إسلام</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="cert-note">ملاحظة: سُلّمت هذه الشهادة للذكرى وتطوير وتحفيز الحفظ.</div>
+
                         </div>
                     </div>
                 </div>
@@ -541,19 +584,25 @@
             }, 2000);
         });
 
+        // 🌟 دالة التفعيل مع كود الأدمن (is230) 🌟
         async function verifyActivationCode() {
             let inputs = document.querySelectorAll('.code-inputs input');
             let code = "";
             inputs.forEach(input => code += input.value.trim());
 
+            // تحويل الحروف إلى صغيرة باش يقبل (is230) أو (IS230)
+            code = code.toLowerCase();
+
             if (code.length < 5) { alert("الرجاء إدخال كود التفعيل كاملاً"); return; }
 
             try {
-                if (code === "11111") {
+                // كود الحماية الخاص بالأدمن
+                if (code === "is230") {
                     localStorage.setItem('maktabat_islam_activated', 'true');
                     goToScreen('about-screen');
                     return;
                 }
+                
                 let docRef = db.collection("codes").doc(code);
                 let doc = await docRef.get();
                 if (doc.exists && doc.data().active === true) {
@@ -621,7 +670,7 @@
             goToScreen('pdf-viewer-screen');
         }
 
-        // --- دوال الأجزاء والسور (اللي كانت ضايعة ورجعناها) ---
+        // --- دوال الأجزاء والسور ---
         function selectRiwaya(riwayaName) {
             selectedRiwaya = riwayaName;
             document.getElementById('juz-riwaya-badge').innerText = "الرواية: " + riwayaName;

@@ -211,7 +211,7 @@
         <!-- 🌟 شاشة الواجهة الرئيسية (مسار الحفظ) 🌟 -->
         <div id="riwaya-screen" class="screen hidden">
             
-            <!-- رسالة التثبيت الاختيارية (تظهر فقط إذا كان التطبيق غير مثبت) -->
+            <!-- رسالة التثبيت الاختيارية -->
             <div id="install-option-container" style="display: none; margin-bottom: 25px;">
                 <button class="btn-install-large" onclick="triggerInstall()">
                     <svg viewBox="0 0 24 24" style="width: 24px; fill: none; stroke: #fff; stroke-width: 2;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15ZM12 2v20M8 6h3M8 10h3M16 6h-3M16 10h-3"/></svg>
@@ -486,7 +486,7 @@
         </div>
     </div>
 
-    <!-- ==================== السكريبت المبرمج الشامل ==================== -->
+    <!-- ==================== السكريبت المبرمج الشامل (مع فايربيس وكود الأدمن) ==================== -->
     <script>
         // إعدادات فايربيس
         const firebaseConfig = {
@@ -517,7 +517,7 @@
             { name: "طارق عبدالغني دعوب (ورش)", url: "https://server10.mp3quran.net/tareq" }
         ];
 
-        // 🌟 قراء حفص (كاملين 11 قارئ) 🌟
+        // 🌟 قراء حفص (11 قارئ كاملين) 🌟
         const recitersHafs = [
             { name: "مشاري العفاسي (حفص)", url: "https://server8.mp3quran.net/afs" },
             { name: "فارس عباد (حفص)", url: "https://server8.mp3quran.net/frs_a" },
@@ -552,25 +552,28 @@
             }, 2000);
         });
 
-        // 🌟 دالة التفعيل مع كود الأدمن (is230) 🌟
+        // 🌟 دالة التحقق والتفعيل (مرتبطة بـ Firebase + كود الأدمن is230) 🌟
         async function verifyActivationCode() {
             let inputs = document.querySelectorAll('.code-inputs input');
             let code = "";
             inputs.forEach(input => code += input.value.trim());
 
-            // تحويل الحروف إلى صغيرة باش يقبل (is230) أو (IS230)
             code = code.toLowerCase();
 
-            if (code.length < 5) { alert("الرجاء إدخال كود التفعيل كاملاً"); return; }
+            if (code.length < 5) { 
+                alert("الرجاء إدخال كود التفعيل كاملاً (5 خانات)"); 
+                return; 
+            }
 
             try {
-                // كود الحماية الخاص بالأدمن
+                // كود الأدمن الخاص بك
                 if (code === "is230") {
                     localStorage.setItem('maktabat_islam_activated', 'true');
                     goToScreen('riwaya-screen');
                     return;
                 }
                 
+                // فحص الأكواد في قاعدة بيانات Firebase
                 let docRef = db.collection("codes").doc(code);
                 let doc = await docRef.get();
                 if (doc.exists && doc.data().active === true) {
@@ -580,7 +583,7 @@
                     alert("كود التفعيل غير صالح أو غير صحيح!");
                 }
             } catch (e) {
-                alert("خطأ في الاتصال بالإنترنت.");
+                alert("خطأ في الاتصال بالإنترنت، يرجى المحاولة مجدداً.");
             }
         }
 
@@ -593,7 +596,6 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // إظهار قسم التثبيت في الشاشة الرئيسية كخيار
             const installContainer = document.getElementById('install-option-container');
             if (installContainer) installContainer.style.display = 'block';
         });
@@ -603,7 +605,6 @@
                 deferredPrompt.prompt(); 
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    // إخفاء الزر بعد التثبيت
                     document.getElementById('install-option-container').style.display = 'none';
                 }
                 deferredPrompt = null;

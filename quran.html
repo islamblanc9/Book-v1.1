@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المصحف الشريف</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* لمنع ظهور أشرطة التمرير المزدوجة */
+            background-color: #f4f4f4;
+        }
+        
+        .quran-container {
+            width: 100%;
+            height: 100vh; /* يأخذ كامل ارتفاع الشاشة */
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; /* إزالة الإطار المزعج */
+        }
+        
+        /* زر الرجوع للتطبيق الرئيسي */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #145a32; /* لون أخضر يتماشى مع الهوية الإسلامية */
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: background 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #0e3d22;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- غير index.html لاسم صفحتك الرئيسية -->
+    <a href="index.html" class="back-btn">⬅ العودة للتطبيق</a>
+    
+    <div class="quran-container">
+        <!-- رابط قرآن فلاش مدمج هنا -->
+        <iframe src="https://app.quranflash.com/book/Medina1?ar" allowfullscreen></iframe>
+    </div>
+
+</body>
+</html>
+

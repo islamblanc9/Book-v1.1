@@ -103,9 +103,11 @@
 
 <div id="library-menu-screen" class="screen hidden"><div class="sticky-header"><button class="btn-back-top" onclick="goToScreen('riwaya-screen')">◀ رجوع</button><div class="section-title" style="margin:0; font-size:20px;">المكتبة الرقمية</div><div style="width: 50px;"></div></div>
 <div class="options-grid" style="padding-bottom: 20px;"><div class="category-title">🎧 الكهف والبقرة والرقية</div><button class="card-btn" onclick="goToScreen('baqarah-screen'); initBaqarahAudio();">🎥🎧 سورة البقرة</button><button class="card-btn" onclick="goToScreen('kahf-screen'); initKahfAudio();">🎥🎧 سورة الكهف</button><button class="card-btn" onclick="goToScreen('ruqyah-screen')">🎥🎧 الرقية الشرعية</button>
-<div class="category-title">🕌 المصاحف والتفاسير</div><button class="card-btn" onclick="openPDF('المصحف الشريف (ورش)', 'https://drive.google.com/file/d/1wQf9IscvpF0p2Hh1CVgvRfgnt2zWd7QU/preview')">🕌 المصحف الشريف (ورش)</button><button class="card-btn" onclick="openPDF('المصحف الشريف (حفص)', 'https://drive.google.com/file/d/15lpVC7MUlyH_vZ7gtaZn67SUmSeC639K/preview')">🕌 المصحف الشريف (حفص)</button><button class="card-btn" onclick="openPDF('تفسير السعدي', 'https://drive.google.com/file/d/1gDEz9YgA0-CJpIwEJBsu_UyQUB9xONLq/preview')">📖 تفسير السعدي</button>
+<div class="category-title">🕌 المصاحف والتفاسير</div><button class="card-btn" onclick="goToScreen('quran-flash-screen')">📖 مصحف تفاعلي 3D (قرآن فلاش)</button><button class="card-btn" onclick="openPDF('المصحف الشريف (ورش)', 'https://drive.google.com/file/d/1wQf9IscvpF0p2Hh1CVgvRfgnt2zWd7QU/preview')">🕌 المصحف الشريف (ورش)</button><button class="card-btn" onclick="openPDF('المصحف الشريف (حفص)', 'https://drive.google.com/file/d/15lpVC7MUlyH_vZ7gtaZn67SUmSeC639K/preview')">🕌 المصحف الشريف (حفص)</button><button class="card-btn" onclick="openPDF('تفسير السعدي', 'https://drive.google.com/file/d/1gDEz9YgA0-CJpIwEJBsu_UyQUB9xONLq/preview')">📖 تفسير السعدي</button>
 <div class="category-title">📚 السيرة والقصص</div><button class="card-btn" onclick="openPDF('قصص الأنبياء - ابن كثير', 'https://drive.google.com/file/d/1t-XIq0hNhKbGh2vupokurjYaSL2kawq8/preview')">📚 قصص الأنبياء (ابن كثير)</button>
 <div class="category-title">🌱 الرقائق والأذكار</div><button class="card-btn" onclick="openPDF('رسائل من القرآن', 'https://drive.google.com/file/d/1R50WraOzYC0oVVe59PRS1m1dUbNcN7_4/preview')">📖 رسائل من القرآن</button><button class="card-btn" onclick="openPDF('رياض الصالحين', 'https://drive.google.com/file/d/1q_PvyIsaCt4cvymeH6pR6hEsGlOwYN67/preview')">🌱 رياض الصالحين</button><button class="card-btn" onclick="openPDF('الداء والدواء - ابن القيم', 'https://drive.google.com/file/d/112UybXDxHsvvuUeL0V_XaPZHYvS2Zg9n/preview')">💊 الداء والدواء</button><button class="card-btn" onclick="openPDF('الأربعون النووية', 'https://drive.google.com/file/d/17_CCdyD2Xl0pcYZn37TYdKro_bV8jce_/preview')">📜 الأربعون النووية</button><button class="card-btn" onclick="openPDF('حصن المسلم', 'https://drive.google.com/file/d/1YR0bcAUfkyi3UytsQ88sW-WbXY0gySyp/preview')">🛡️ حصن المسلم</button></div></div>
+
+<div id="quran-flash-screen" class="screen hidden"><div class="sticky-header"><button class="btn-back-top" onclick="goToScreen('library-menu-screen')">◀ المكتبة</button><div class="section-title" style="margin:0; font-size:20px;">المصحف التفاعلي</div><div style="width: 50px;"></div></div><iframe src="https://app.quranflash.com/book/Medina1?ar" style="width: 100%; height: 75vh; border: 2px solid #d4af37; border-radius: 12px; margin-bottom: 15px; background: #fffdf9;" allowfullscreen></iframe></div>
 
 <div id="ruqyah-screen" class="screen hidden"><div class="sticky-header"><button class="btn-back-top" onclick="goToScreen('library-menu-screen')">◀ المكتبة</button><div class="section-title" style="margin:0; font-size:20px;">الرقية الشرعية</div><div style="width: 50px;"></div></div><div class="audio-box" style="padding-bottom: 5px;"><h4 style="color:#1a8c4b; margin: 0 0 10px 0; font-family:'Tajawal', sans-serif;">🎥 الرقية الشرعية (فيديو)</h4><div class="video-box"><iframe src="https://www.youtube.com/embed/u6TnsTF6XUM" allow="autoplay; fullscreen"></iframe></div></div><div class="audio-box"><h4 style="color:#1a8c4b; margin: 0 0 10px 0; font-family:'Tajawal', sans-serif;">🎧 الاستماع للرقية (صوت)</h4><audio controls style="width:100%; height: 40px;" src="https://www.dropbox.com/scl/fi/4h9q622vq65m9qozpas6t/MP3_1.mp3?rlkey=wzmxudrvtohjp4y3q1vnyn6rj&st=xrp6ywtl&dl=1"></audio></div></div>
 
@@ -172,7 +174,6 @@ async function verifyActivationCode() {
     }
 
     try {
-        // كود التجربة الجديد
         if (code === "IS230") {
             localStorage.setItem('maktabat_islam_activated', 'true');
             goToScreen('riwaya-screen');
@@ -376,7 +377,6 @@ async function fetchSurahData(surahNum) {
 
         document.getElementById('quran-page-content').innerHTML = quranHtml;
 
-        // ترتيب التفسير: دمج الآيات المتتالية إذا كان نص التفسير متطابقاً تماماً
         let tAyahs = tData.data.ayahs;
         let tafseerHtml = '<div class="tafseer-title">التفسير الميسر لسورة ' + currentSurahObj.name + '</div>';
 
